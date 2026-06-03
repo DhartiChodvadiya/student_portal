@@ -18,8 +18,7 @@ CORS(app)
 
 # SECRET KEY - Load from .env or use default
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "your_secret_key_123")
-print(f"SECRET_KEY loaded: {app.config['SECRET_KEY']}")  # Debug line - remove after testing
-
+# print(f"SECRET_KEY loaded: {app.config['SECRET_KEY']}")  # Removed for security
 app.config["SESSION_COOKIE_SECURE"] = True
 
 # Email Configuration
