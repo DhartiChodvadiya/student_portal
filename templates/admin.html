@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Management Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+        }
+
+        .dashboard-container {
+            min-height: 100vh;
+            background: #0f172a;
+        }
+
+        .navbar {
+            background: #1e293b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .logo h2 {
+            color: #38bdf8;
+            font-size: 1.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-name {
+            color: #94a3b8;
+        }
+
+        .dashboard-content {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #1e293b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #334155;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #38bdf8;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #94a3b8;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #334155;
+        }
+
+        .card h3 {
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            text-align: left;
+            padding: 0.75rem;
+            color: #cbd5e1;
+            border-bottom: 1px solid #334155;
+        }
+
+        .data-table th {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background: #0ea5e9;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+        }
+
+        .btn-outline:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            color: #f1f5f9;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+
+        .row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #065f46;
+            color: #6ee7b7;
+        }
+
+        .alert-error {
+            background: #991b1b;
+            color: #fca5a5;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-content {
+                padding: 0 1rem;
+            }
+            .row-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-user-shield" style="font-size: 3rem; color: #38bdf8;"></i>
+                <h1>Admin Portal</h1>
+                <p>Secure administrator access</p>
+            </div>
+            <div id="loginMsg" class="alert" style="display:none;"></div>
+            <form id="loginForm">
+                <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="admin@portal.com" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Enter password" required></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+            <hr style="margin: 1.5rem 0;">
+            <div style="text-align: center;">
+                <p>Need access? <a href="#" id="showRegisterBtn" style="color: #38bdf8;">Register new admin</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Section -->
+    <div id="registerSection" class="login-container" style="display:none;">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-user-cog" style="font-size: 3rem; color: #38bdf8;"></i>
+                <h1>Admin Registration</h1>
+                <p>Create administrator account</p>
+            </div>
+            <div id="registerMsg" class="alert" style="display:none;"></div>
+            <form id="registerForm">
+                <div class="row-2col">
+                    <div class="form-group"><label>Admin ID</label><input type="number" id="regAdminId" placeholder="e.g., 5001" required></div>
+                    <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="Alex Morgan" required></div>
+                </div>
+                <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="admin@college.edu" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Strong password" required></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-check-circle"></i> Register</button>
+            </form>
+            <hr style="margin: 1.5rem 0;">
+            <div style="text-align: center;"><a href="#" id="showLoginBtn" style="color: #38bdf8;">Back to Login</a></div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" style="display:none;">
+        <div class="navbar">
+            <div class="logo">
+                <h2><i class="fas fa-chalkboard-user"></i> Admin<span style="color:#38bdf8;">Dashboard</span></h2>
+            </div>
+            <div class="user-info">
+                <span class="user-name"><i class="fas fa-user-shield"></i> <span id="adminName">Admin</span></span>
+                <button id="logoutBtn" class="btn-outline btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="stats-grid">
+                <div class="stat-card"><h3 id="totalStudents">0</h3><p>Total Students</p></div>
+                <div class="stat-card"><h3 id="totalCourses">0</h3><p>Active Courses</p></div>
+                <div class="stat-card"><h3 id="totalAdmins">0</h3><p>Total Admins</p></div>
+            </div>
+            <div class="card">
+                <div class="flex-between" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3><i class="fas fa-users"></i> Student Management</h3>
+                    <button id="refreshBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div id="studentTable" class="table-responsive">
+                    <p>Loading students...</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-edit"></i> Update Profile</h3>
+                <div id="updateMsg" class="alert" style="display:none;"></div>
+                <form id="updateForm">
+                    <div class="row-2col">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="updateName"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="updateEmail"></div>
+                    </div>
+                    <div class="form-group"><label>New Password (optional)</label><input type="password" id="updatePassword" placeholder="Leave blank to keep unchanged"></div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '';
+        let authToken = localStorage.getItem("adminToken") || null;
+        let currentUser = null;
+
+        async function apiRequest(endpoint, method = "GET", body = null, needAuth = true) {
+            const headers = { "Content-Type": "application/json" };
+            if (needAuth && authToken) headers["token"] = authToken;
+            const options = { method, headers };
+            if (body) options.body = JSON.stringify(body);
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`, options);
+                const data = await res.json();
+                return { status: res.status, data };
+            } catch (error) {
+                return { status: 0, data: { message: "Server error" } };
+            }
+        }
+
+        function showMessage(containerId, message, isError = true) {
+            const el = document.getElementById(containerId);
+            if (el) {
+                el.style.display = "block";
+                el.className = `alert ${isError ? 'alert-error' : 'alert-success'}`;
+                el.innerHTML = message;
+                setTimeout(() => el.style.display = "none", 4000);
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("registerSection").style.display = "none";
+            document.getElementById("dashboardSection").style.display = "block";
+            loadAdminData();
+            loadStudentList();
+        }
+
+        function showLogin() {
+            document.getElementById("loginSection").style.display = "flex";
+            document.getElementById("registerSection").style.display = "none";
+            document.getElementById("dashboardSection").style.display = "none";
+        }
+
+        async function loadAdminData() {
+            document.getElementById("adminName").innerText = currentUser.name;
+            const adminRes = await apiRequest(`/admin/${currentUser.user_id}`, "GET", null, true);
+            if (adminRes.status === 200) {
+                document.getElementById("updateName").value = adminRes.data.name;
+                document.getElementById("updateEmail").value = adminRes.data.email;
+            }
+        }
+
+        async function loadStudentList() {
+            const res = await apiRequest("/students", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                document.getElementById("totalStudents").innerText = res.data.length;
+                const courses = new Set(res.data.map(s => s.course).filter(c => c));
+                document.getElementById("totalCourses").innerText = courses.size;
+                
+                let html = `<table class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Phone</th><th>Gender</th><th>Action</th></tr></thead><tbody>`;
+                res.data.forEach(s => {
+                    html += `<tr>
+                        <td>${s.student_id}</td>
+                        <td>${s.name}</td>
+                        <td>${s.email}</td>
+                        <td>${s.course || '-'}</td>
+                        <td>${s.phoneno || '-'}</td>
+                        <td>${s.gender || '-'}</td>
+                        <td><button class="btn-danger btn" onclick="deleteStudent(${s.student_id})"><i class="fas fa-trash"></i> Delete</button></td>
+                    </tr>`;
+                });
+                html += `</tbody></table>`;
+                document.getElementById("studentTable").innerHTML = html;
+            }
+        }
+
+        window.deleteStudent = async function(studentId) {
+            if (confirm("Delete this student? This cannot be undone!")) {
+                const res = await apiRequest(`/student/delete/${studentId}`, "DELETE", null, true);
+                if (res.status === 200) {
+                    showMessage("updateMsg", "Student deleted!", false);
+                    loadStudentList();
+                } else {
+                    showMessage("updateMsg", res.data.message, true);
+                }
+            }
+        };
+
+        // Login
+        document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const res = await apiRequest("/admin/login", "POST", {
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            }, false);
+            if (res.status === 200) {
+                authToken = res.data.token;
+                currentUser = { user_id: res.data.admin_id, role: "admin", name: res.data.name };
+                localStorage.setItem("adminToken", authToken);
+                localStorage.setItem("adminUser", JSON.stringify(currentUser));
+                showDashboard();
+            } else {
+                showMessage("loginMsg", res.data.message, true);
+            }
+        });
+
+        // Register
+        document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                admin_id: parseInt(document.getElementById("regAdminId").value),
+                name: document.getElementById("regName").value,
+                email: document.getElementById("regEmail").value,
+                password: document.getElementById("regPassword").value
+            };
+            const res = await apiRequest("/admin/register", "POST", payload, false);
+            if (res.status === 200) {
+                showMessage("registerMsg", "Admin registered! Please login.", false);
+                setTimeout(() => showLogin(), 1500);
+            } else {
+                showMessage("registerMsg", res.data.message, true);
+            }
+        });
+
+        // Update Profile
+        document.getElementById("updateForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById("updateName").value,
+                email: document.getElementById("updateEmail").value,
+                password: document.getElementById("updatePassword").value || "temp123"
+            };
+            const res = await apiRequest(`/admin/update/${currentUser.user_id}`, "PUT", payload, true);
+            if (res.status === 200) {
+                showMessage("updateMsg", "Profile updated!", false);
+                currentUser.name = payload.name;
+                document.getElementById("adminName").innerText = payload.name;
+            } else {
+                showMessage("updateMsg", res.data.message, true);
+            }
+        });
+
+        // Navigation
+        document.getElementById("showRegisterBtn")?.addEventListener("click", () => {
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("registerSection").style.display = "flex";
+        });
+        document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
+        document.getElementById("logoutBtn")?.addEventListener("click", () => {
+            localStorage.removeItem("adminToken");
+            localStorage.removeItem("adminUser");
+            showLogin();
+        });
+        document.getElementById("refreshBtn")?.addEventListener("click", loadStudentList);
+
+        // Check saved session
+        const savedToken = localStorage.getItem("adminToken");
+        const savedUser = localStorage.getItem("adminUser");
+        if (savedToken && savedUser) {
+            authToken = savedToken;
+            currentUser = JSON.parse(savedUser);
+            showDashboard();
+        }
+    </script>
+</body>
+</html>

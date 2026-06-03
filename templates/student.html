@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | My Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Login Container */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #64748b;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            min-height: 100vh;
+            background: #f1f5f9;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            color: #764ba2;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            color: #1e293b;
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .info-item {
+            padding: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-top: 0.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1e293b;
+            font-size: 0.85rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Validation styles */
+        .form-group input.valid {
+            border-color: #10b981;
+            background-color: #f0fdf4;
+        }
+
+        .form-group input.invalid {
+            border-color: #ef4444;
+            background-color: #fee2e2;
+        }
+
+        .validation-hint {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .validation-hint.error {
+            color: #ef4444;
+        }
+
+        .validation-hint.success {
+            color: #10b981;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .alert {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border-left: 4px solid #22c55e;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-content {
+                padding: 0 1rem;
+            }
+            .row-2col {
+                grid-template-columns: 1fr;
+            }
+            .navbar {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="loginSection" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-graduation-cap" style="font-size: 3rem; color: #667eea;"></i>
+                <h1>Student Portal</h1>
+                <p>Login to access your dashboard</p>
+            </div>
+            <div id="loginMsg" class="alert" style="display:none;"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" placeholder="student@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+            <hr style="margin: 1.5rem 0;">
+            <div style="text-align: center;">
+                <p>Don't have an account? <a href="#" id="showRegisterBtn" style="color: #667eea;">Register here</a></p>
+                <p style="margin-top: 0.5rem;"><a href="#" id="showForgotBtn" style="color: #667eea; font-size: 0.85rem;">Forgot Password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Section -->
+    <div id="registerSection" class="login-container" style="display:none;">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-user-plus" style="font-size: 3rem; color: #667eea;"></i>
+                <h1>Student Registration</h1>
+                <p>Create your account</p>
+            </div>
+            <div id="registerMsg" class="alert" style="display:none;"></div>
+            <form id="registerForm">
+                <div class="row-2col">
+                    <div class="form-group"><label>Student ID</label><input type="number" id="regStudentId" placeholder="e.g., 101" required></div>
+                    <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="John Doe" required></div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="regEmail" placeholder="student@example.com" required>
+                    <div class="validation-hint" id="emailHint">Enter a valid email address (e.g., name@example.com)</div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="regPassword" placeholder="Create password" required>
+                    <div class="validation-hint" id="passwordHint">password Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character.</div>
+                </div>
+                <div class="row-2col">
+                    <div class="form-group"><label>Course</label><input type="text" id="regCourse" placeholder="Computer Science" required></div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="regPhone" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}" required>
+                        <div class="validation-hint" id="phoneHint">Enter exactly 10 digits.</div>
+                    </div>
+                </div>
+                <div class="form-group"><label>Gender</label><select id="regGender"><option>Male</option><option>Female</option><option>Other</option></select></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-check-circle"></i> Register</button>
+            </form>
+            <hr style="margin: 1.5rem 0;">
+            <div style="text-align: center;">
+                <p>Already have an account? <a href="#" id="showLoginBtn" style="color: #667eea;">Login here</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Section -->
+    <div id="forgotSection" class="login-container" style="display:none;">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-key" style="font-size: 3rem; color: #667eea;"></i>
+                <h1>Reset Password</h1>
+                <p>We'll send you an OTP to reset your password</p>
+            </div>
+            <div id="forgotMsg" class="alert" style="display:none;"></div>
+            <form id="forgotForm">
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="forgotEmail" placeholder="student@example.com" required>
+                    <div class="validation-hint" id="forgotEmailHint">📧 Enter your registered email address</div>
+                </div>
+                <button type="submit" id="sendOtpBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-paper-plane"></i> Send OTP</button>
+            </form>
+            <div id="otpSection" style="display:none; margin-top: 1rem;">
+                <div class="form-group">
+                    <label><i class="fas fa-shield-alt"></i> Enter OTP</label>
+                    <input type="text" id="otpCode" placeholder="6-digit OTP" maxlength="6">
+                    <div class="validation-hint" id="otpHint">Enter the 6-digit OTP sent to your email</div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> New Password</label>
+                    <input type="password" id="newPassword" placeholder="Min 8 characters">
+                    <div class="validation-hint" id="forgotPasswordHint">Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character (!@#$%^&*)</div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-check-circle"></i> Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                    <div class="validation-hint" id="confirmPasswordHint">✅ Re-enter your new password</div>
+                </div>
+                <button id="resetPasswordBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-sync-alt"></i> Reset Password</button>
+            </div>
+            <hr style="margin: 1.5rem 0;">
+            <div style="text-align: center;"><a href="#" id="backToLoginBtn" style="color: #667eea;">Back to Login</a></div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" style="display:none;">
+        <div class="navbar">
+            <div class="logo">
+                <h2><i class="fas fa-graduation-cap"></i> Student<span>Hub</span></h2>
+            </div>
+            <div class="user-info">
+                <span class="user-name"><i class="fas fa-user"></i> <span id="userName">Student</span></span>
+                <button id="logoutBtn" class="btn-outline btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-content">
+            <div class="welcome-banner">
+                <h2>Welcome <span id="welcomeName">Student</span></h2>
+                <p>Here's what's happening with your academic journey today.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-book"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statCourse">-</h3>
+                        <p>Current Course</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-id-card"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statId">-</h3>
+                        <p>Student ID</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-phone"></i></div>
+                    <div class="stat-info">
+                        <h3 id="statPhone">-</h3>
+                        <p>Phone Number</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-user-circle"></i> My Profile</h3>
+                <div class="profile-info">
+                    <div class="info-item"><div class="info-label">Email</div><div class="info-value" id="profileEmail">-</div></div>
+                    <div class="info-item"><div class="info-label">Gender</div><div class="info-value" id="profileGender">-</div></div>
+                    <div class="info-item"><div class="info-label">Course</div><div class="info-value" id="profileCourse">-</div></div>
+                    <div class="info-item"><div class="info-label">Phone</div><div class="info-value" id="profilePhone">-</div></div>
+                </div>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-edit"></i> Update Profile</h3>
+                <div id="updateMsg" class="alert" style="display:none;"></div>
+                <form id="updateForm">
+                    <div class="row-2col">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="updateName"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="updateEmail"></div>
+                    </div>
+                    <div class="row-2col">
+                        <div class="form-group"><label>Course</label><input type="text" id="updateCourse"></div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="updatePhone" placeholder="9876543210" maxlength="10">
+                            <div class="validation-hint" id="updatePhoneHint">Enter exactly 10 digits</div>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Gender</label><select id="updateGender"><option>Male</option><option>Female</option><option>Other</option></select></div>
+                    <div class="form-group">
+                        <label>New Password (optional)</label>
+                        <input type="password" id="updatePassword" placeholder="Leave blank to keep unchanged">
+                        <div class="validation-hint" id="updatePasswordHint">Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Profile</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-key"></i> Change Password</h3>
+                <div id="changePwdMsg" class="alert" style="display:none;"></div>
+                <form id="changePasswordForm">
+                    <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required></div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="newPasswordChange" required>
+                        <div class="validation-hint" id="changePasswordHint">Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character</div>
+                    </div>
+                    <div class="form-group"><label>Confirm Password</label><input type="password" id="confirmPasswordChange" required></div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '';
+        let authToken = localStorage.getItem("studentToken") || null;
+        let currentUser = null;
+
+        // Email validation function
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Password validation function
+        function isValidPassword(password) {
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+            return passwordRegex.test(password);
+        }
+
+        // Phone number validation function
+        function isValidPhoneNumber(phone) {
+            const phoneStr = phone.toString().trim();
+            return /^\d{10}$/.test(phoneStr);
+        }
+
+        // OTP validation function
+        function isValidOtp(otp) {
+            return /^\d{6}$/.test(otp);
+        }
+
+        // Real-time email validation for registration
+        function setupEmailValidation() {
+            const emailInput = document.getElementById("regEmail");
+            if (emailInput) {
+                emailInput.addEventListener("input", function() {
+                    const email = this.value;
+                    const hint = document.getElementById("emailHint");
+                    if (email && !isValidEmail(email)) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        hint.innerHTML = "❌ Invalid email format. Use name@example.com";
+                    } else if (email && isValidEmail(email)) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Valid email address";
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "📧 Enter a valid email address (e.g., name@example.com)";
+                    }
+                });
+            }
+        }
+
+        // Real-time forgot email validation
+        function setupForgotEmailValidation() {
+            const emailInput = document.getElementById("forgotEmail");
+            if (emailInput) {
+                emailInput.addEventListener("input", function() {
+                    const email = this.value;
+                    const hint = document.getElementById("forgotEmailHint");
+                    if (email && !isValidEmail(email)) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        hint.innerHTML = "❌ Invalid email format";
+                    } else if (email && isValidEmail(email)) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Valid email address";
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "📧 Enter your registered email address";
+                    }
+                });
+            }
+        }
+
+        // Real-time OTP validation
+        function setupOtpValidation() {
+            const otpInput = document.getElementById("otpCode");
+            if (otpInput) {
+                otpInput.addEventListener("input", function() {
+                    let value = this.value.replace(/\D/g, '');
+                    if (value.length > 6) value = value.slice(0, 6);
+                    this.value = value;
+                    
+                    const hint = document.getElementById("otpHint");
+                    if (value.length === 6) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Valid OTP";
+                    } else if (value.length > 0) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        hint.innerHTML = `❌ Need ${6 - value.length} more digit(s)`;
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "Enter the 6-digit OTP sent to your email";
+                    }
+                });
+            }
+        }
+
+        // Real-time forgot password validation
+        function setupForgotPasswordValidation() {
+            const passwordInput = document.getElementById("newPassword");
+            if (passwordInput) {
+                passwordInput.addEventListener("input", function() {
+                    const password = this.value;
+                    const hint = document.getElementById("forgotPasswordHint");
+                    if (password && !isValidPassword(password)) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        let missing = [];
+                        if (password.length < 8) missing.push("8+ characters");
+                        if (!/[A-Z]/.test(password)) missing.push("1 uppercase");
+                        if (!/[a-z]/.test(password)) missing.push("1 lowercase");
+                        if (!/\d/.test(password)) missing.push("1 number");
+                        if (!/[@$!%*?&#]/.test(password)) missing.push("1 special char");
+                        hint.innerHTML = "❌ Missing: " + missing.join(", ");
+                    } else if (password && isValidPassword(password)) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Strong password!";
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character";
+                    }
+                });
+            }
+        }
+
+        // Real-time confirm password validation for forgot password
+        function setupForgotConfirmPasswordValidation() {
+            const confirmInput = document.getElementById("confirmPassword");
+            const passwordInput = document.getElementById("newPassword");
+            
+            if (confirmInput && passwordInput) {
+                function validateConfirm() {
+                    const password = passwordInput.value;
+                    const confirm = confirmInput.value;
+                    const hint = document.getElementById("confirmPasswordHint");
+                    
+                    if (confirm && password !== confirm) {
+                        confirmInput.classList.add("invalid");
+                        confirmInput.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        hint.innerHTML = "❌ Passwords do not match";
+                    } else if (confirm && password === confirm && isValidPassword(password)) {
+                        confirmInput.classList.add("valid");
+                        confirmInput.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Passwords match";
+                    } else if (confirm && password === confirm) {
+                        confirmInput.classList.add("valid");
+                        confirmInput.classList.remove("invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "✅ Passwords match";
+                    } else {
+                        confirmInput.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "✅ Re-enter your new password";
+                    }
+                }
+                
+                confirmInput.addEventListener("input", validateConfirm);
+                passwordInput.addEventListener("input", validateConfirm);
+            }
+        }
+
+        // Real-time password validation for registration
+        function setupPasswordValidation() {
+            const passwordInput = document.getElementById("regPassword");
+            if (passwordInput) {
+                passwordInput.addEventListener("input", function() {
+                    const password = this.value;
+                    const hint = document.getElementById("passwordHint");
+                    if (password && !isValidPassword(password)) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        let missing = [];
+                        if (password.length < 8) missing.push("8+ characters");
+                        if (!/[A-Z]/.test(password)) missing.push("1 uppercase");
+                        if (!/[a-z]/.test(password)) missing.push("1 lowercase");
+                        if (!/\d/.test(password)) missing.push("1 number");
+                        if (!/[@$!%*?&#]/.test(password)) missing.push("1 special char");
+                        hint.innerHTML = "❌ Missing: " + missing.join(", ");
+                    } else if (password && isValidPassword(password)) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Strong password!";
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character";
+                    }
+                });
+            }
+        }
+
+        // Real-time phone validation
+        function setupPhoneValidation() {
+            const phoneInputs = ['regPhone', 'updatePhone'];
+            
+            phoneInputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                const hintId = inputId === 'regPhone' ? 'phoneHint' : 'updatePhoneHint';
+                const hint = document.getElementById(hintId);
+                
+                if (input) {
+                    input.addEventListener('input', function(e) {
+                        let value = this.value.replace(/\D/g, '');
+                        if (value.length > 10) value = value.slice(0, 10);
+                        this.value = value;
+                        
+                        if (value.length === 10) {
+                            this.classList.add('valid');
+                            this.classList.remove('invalid');
+                            if (hint) {
+                                hint.classList.add('success');
+                                hint.classList.remove('error');
+                                hint.innerHTML = "✅ Valid phone number";
+                            }
+                        } else if (value.length > 0) {
+                            this.classList.add('invalid');
+                            this.classList.remove('valid');
+                            if (hint) {
+                                hint.classList.add('error');
+                                hint.classList.remove('success');
+                                hint.innerHTML = `❌ Need ${10 - value.length} more digit(s)`;
+                            }
+                        } else {
+                            this.classList.remove('invalid', 'valid');
+                            if (hint) {
+                                hint.classList.remove('error', 'success');
+                                hint.innerHTML = "Enter exactly 10 digits";
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // Update password validation for change password form
+        function setupChangePasswordValidation() {
+            const passwordInput = document.getElementById("newPasswordChange");
+            if (passwordInput) {
+                passwordInput.addEventListener("input", function() {
+                    const password = this.value;
+                    const hint = document.getElementById("changePasswordHint");
+                    if (password && !isValidPassword(password)) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        let missing = [];
+                        if (password.length < 8) missing.push("8+ characters");
+                        if (!/[A-Z]/.test(password)) missing.push("1 uppercase");
+                        if (!/[a-z]/.test(password)) missing.push("1 lowercase");
+                        if (!/\d/.test(password)) missing.push("1 number");
+                        if (!/[@$!%*?&#]/.test(password)) missing.push("1 special char");
+                        hint.innerHTML = "❌ Missing: " + missing.join(", ");
+                    } else if (password && isValidPassword(password)) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Strong password!";
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "Must contain: 8+ chars, 1 uppercase, 1 lowercase, 1 number, 1 special character";
+                    }
+                });
+            }
+        }
+
+        // Update password validation for update profile form
+        function setupUpdatePasswordValidation() {
+            const passwordInput = document.getElementById("updatePassword");
+            if (passwordInput) {
+                passwordInput.addEventListener("input", function() {
+                    const password = this.value;
+                    const hint = document.getElementById("updatePasswordHint");
+                    if (password && !isValidPassword(password)) {
+                        this.classList.add("invalid");
+                        this.classList.remove("valid");
+                        hint.classList.add("error");
+                        hint.classList.remove("success");
+                        let missing = [];
+                        if (password.length < 8) missing.push("8+ characters");
+                        if (!/[A-Z]/.test(password)) missing.push("1 uppercase");
+                        if (!/[a-z]/.test(password)) missing.push("1 lowercase");
+                        if (!/\d/.test(password)) missing.push("1 number");
+                        if (!/[@$!%*?&#]/.test(password)) missing.push("1 special char");
+                        hint.innerHTML = "❌ Missing: " + missing.join(", ");
+                    } else if (password && isValidPassword(password)) {
+                        this.classList.add("valid");
+                        this.classList.remove("invalid");
+                        hint.classList.add("success");
+                        hint.classList.remove("error");
+                        hint.innerHTML = "✅ Strong password!";
+                    } else {
+                        this.classList.remove("valid", "invalid");
+                        hint.classList.remove("error", "success");
+                        hint.innerHTML = "Leave blank to keep current password";
+                    }
+                });
+            }
+        }
+
+        async function apiRequest(endpoint, method = "GET", body = null, needAuth = true) {
+            const headers = { "Content-Type": "application/json" };
+            if (needAuth && authToken) headers["token"] = authToken;
+            const options = { method, headers };
+            if (body) options.body = JSON.stringify(body);
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`, options);
+                const data = await res.json();
+                return { status: res.status, data };
+            } catch (error) {
+                return { status: 0, data: { message: "Server error" } };
+            }
+        }
+
+        function showMessage(containerId, message, isError = true) {
+            const el = document.getElementById(containerId);
+            if (el) {
+                el.style.display = "block";
+                el.className = `alert ${isError ? 'alert-error' : 'alert-success'}`;
+                el.innerHTML = message;
+                setTimeout(() => el.style.display = "none", 4000);
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("registerSection").style.display = "none";
+            document.getElementById("forgotSection").style.display = "none";
+            document.getElementById("dashboardSection").style.display = "block";
+            loadStudentData();
+        }
+
+        function showLogin() {
+            document.getElementById("loginSection").style.display = "flex";
+            document.getElementById("registerSection").style.display = "none";
+            document.getElementById("forgotSection").style.display = "none";
+            document.getElementById("dashboardSection").style.display = "none";
+        }
+
+        async function loadStudentData() {
+            const res = await apiRequest(`/student/${currentUser.user_id}`, "GET", null, true);
+            if (res.status === 200) {
+                const s = res.data;
+                document.getElementById("userName").innerText = s.name;
+                document.getElementById("welcomeName").innerText = s.name;
+                document.getElementById("statCourse").innerText = s.course || "Not enrolled";
+                document.getElementById("statId").innerText = s.student_id;
+                document.getElementById("statPhone").innerText = s.phoneno || "Not set";
+                document.getElementById("profileEmail").innerText = s.email;
+                document.getElementById("profileGender").innerText = s.gender;
+                document.getElementById("profileCourse").innerText = s.course;
+                document.getElementById("profilePhone").innerText = s.phoneno;
+                document.getElementById("updateName").value = s.name;
+                document.getElementById("updateEmail").value = s.email;
+                document.getElementById("updateCourse").value = s.course;
+                document.getElementById("updatePhone").value = s.phoneno;
+                document.getElementById("updateGender").value = s.gender;
+            }
+        }
+
+        // Login
+        document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const res = await apiRequest("/student/login", "POST", {
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value
+            }, false);
+            if (res.status === 200) {
+                authToken = res.data.token;
+                currentUser = { user_id: res.data.student_id, role: "student", name: res.data.name };
+                localStorage.setItem("studentToken", authToken);
+                localStorage.setItem("studentUser", JSON.stringify(currentUser));
+                showDashboard();
+            } else {
+                showMessage("loginMsg", res.data.message, true);
+            }
+        });
+
+        // Register with validations
+        document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById("regEmail").value;
+            const password = document.getElementById("regPassword").value;
+            const phone = document.getElementById("regPhone").value;
+            
+            if (!isValidEmail(email)) {
+                showMessage("registerMsg", "Please enter a valid email address", true);
+                document.getElementById("regEmail").focus();
+                return;
+            }
+            
+            if (!isValidPassword(password)) {
+                showMessage("registerMsg", "Password must contain: 8+ characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character", true);
+                document.getElementById("regPassword").focus();
+                return;
+            }
+            
+            if (!isValidPhoneNumber(phone)) {
+                showMessage("registerMsg", "Please enter exactly 10 digits for phone number", true);
+                document.getElementById("regPhone").focus();
+                return;
+            }
+            
+            const payload = {
+                student_id: parseInt(document.getElementById("regStudentId").value),
+                name: document.getElementById("regName").value,
+                email: email,
+                password: password,
+                course: document.getElementById("regCourse").value,
+                phoneno: phone,
+                gender: document.getElementById("regGender").value
+            };
+            const res = await apiRequest("/student/register", "POST", payload, false);
+            if (res.status === 200) {
+                showMessage("registerMsg", "Registration successful! Please login.", false);
+                setTimeout(() => showLogin(), 1500);
+            } else {
+                showMessage("registerMsg", res.data.message, true);
+            }
+        });
+
+        // Update Profile with validations
+        document.getElementById("updateForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById("updatePhone").value;
+            const newPassword = document.getElementById("updatePassword").value;
+            
+            if (phone && !isValidPhoneNumber(phone)) {
+                showMessage("updateMsg", "Please enter exactly 10 digits for phone number", true);
+                document.getElementById("updatePhone").focus();
+                return;
+            }
+            
+            if (newPassword && !isValidPassword(newPassword)) {
+                showMessage("updateMsg", "Password must contain: 8+ characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character", true);
+                document.getElementById("updatePassword").focus();
+                return;
+            }
+            
+            const payload = {
+                name: document.getElementById("updateName").value,
+                email: document.getElementById("updateEmail").value,
+                course: document.getElementById("updateCourse").value,
+                phoneno: phone,
+                gender: document.getElementById("updateGender").value,
+                password: newPassword || "temp123"
+            };
+            const res = await apiRequest(`/student/update/${currentUser.user_id}`, "PUT", payload, true);
+            if (res.status === 200) {
+                showMessage("updateMsg", "Profile updated!", false);
+                loadStudentData();
+            } else {
+                showMessage("updateMsg", res.data.message, true);
+            }
+        });
+
+        // Change Password with validation
+        document.getElementById("changePasswordForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newPwd = document.getElementById("newPasswordChange").value;
+            const confirmPwd = document.getElementById("confirmPasswordChange").value;
+            
+            if (newPwd !== confirmPwd) {
+                showMessage("changePwdMsg", "Passwords don't match", true);
+                return;
+            }
+            
+            if (!isValidPassword(newPwd)) {
+                showMessage("changePwdMsg", "Password must contain: 8+ characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character", true);
+                document.getElementById("newPasswordChange").focus();
+                return;
+            }
+            
+            const res = await apiRequest("/student/change_password", "POST", {
+                old_password: document.getElementById("currentPassword").value,
+                new_password: newPwd
+            }, true);
+            if (res.status === 200) {
+                showMessage("changePwdMsg", res.data.message, false);
+                document.getElementById("changePasswordForm").reset();
+            } else {
+                showMessage("changePwdMsg", res.data.message, true);
+            }
+        });
+
+        // Forgot Password - Send OTP with email validation
+        document.getElementById("sendOtpBtn")?.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("forgotEmail").value;
+            
+            if (!isValidEmail(email)) {
+                showMessage("forgotMsg", "Please enter a valid email address", true);
+                document.getElementById("forgotEmail").focus();
+                return;
+            }
+            
+            const res = await apiRequest("/student/forgot_password", "POST", { email }, false);
+            if (res.status === 200) {
+                if (res.data.otp) alert(`Your OTP: ${res.data.otp}`);
+                document.getElementById("otpSection").style.display = "block";
+                showMessage("forgotMsg", "OTP sent! Please check your email.", false);
+            } else {
+                showMessage("forgotMsg", res.data.message, true);
+            }
+        });
+
+        // Reset Password with validations
+        document.getElementById("resetPasswordBtn")?.addEventListener("click", async () => {
+            const email = document.getElementById("forgotEmail").value;
+            const otp = document.getElementById("otpCode").value;
+            const newPwd = document.getElementById("newPassword").value;
+            const confirmPwd = document.getElementById("confirmPassword").value;
+            
+            if (!isValidOtp(otp)) {
+                showMessage("forgotMsg", "Please enter a valid 6-digit OTP", true);
+                document.getElementById("otpCode").focus();
+                return;
+            }
+            
+            if (!isValidPassword(newPwd)) {
+                showMessage("forgotMsg", "Password must contain: 8+ characters, 1 uppercase, 1 lowercase, 1 number, and 1 special character", true);
+                document.getElementById("newPassword").focus();
+                return;
+            }
+            
+            if (newPwd !== confirmPwd) {
+                showMessage("forgotMsg", "Passwords do not match", true);
+                document.getElementById("confirmPassword").focus();
+                return;
+            }
+            
+            const res = await apiRequest("/student/reset_password", "POST", { email, otp, new_password: newPwd }, false);
+            if (res.status === 200) {
+                showMessage("forgotMsg", res.data.message, false);
+                setTimeout(() => showLogin(), 1500);
+            } else {
+                showMessage("forgotMsg", res.data.message, true);
+            }
+        });
+
+        // Navigation
+        document.getElementById("showRegisterBtn")?.addEventListener("click", () => {
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("registerSection").style.display = "flex";
+            document.getElementById("forgotSection").style.display = "none";
+        });
+        document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
+        document.getElementById("showForgotBtn")?.addEventListener("click", () => {
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("registerSection").style.display = "none";
+            document.getElementById("forgotSection").style.display = "flex";
+        });
+        document.getElementById("backToLoginBtn")?.addEventListener("click", showLogin);
+        document.getElementById("logoutBtn")?.addEventListener("click", () => {
+            localStorage.removeItem("studentToken");
+            localStorage.removeItem("studentUser");
+            authToken = null;
+            showLogin();
+        });
+
+        // Initialize all validations
+        setupEmailValidation();
+        setupForgotEmailValidation();
+        setupOtpValidation();
+        setupForgotPasswordValidation();
+        setupForgotConfirmPasswordValidation();
+        setupPasswordValidation();
+        setupPhoneValidation();
+        setupChangePasswordValidation();
+        setupUpdatePasswordValidation();
+
+        // Check saved session
+        const savedToken = localStorage.getItem("studentToken");
+        const savedUser = localStorage.getItem("studentUser");
+        if (savedToken && savedUser) {
+            authToken = savedToken;
+            currentUser = JSON.parse(savedUser);
+            showDashboard();
+        }
+    </script>
+</body>
+</html>

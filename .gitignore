@@ -1,0 +1,45 @@
+# Secrets (MOST IMPORTANT - never share!)
+.env
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment (if you use one)
+venv/
+env/
+ENV/
+venv.bak/
+env.bak/
+
+# IDE files (your personal settings)
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Log files
+*.log
+*.log.*
+
+# Database files (local backups)
+*.db
+*.sqlite
+*.sqlite3
+
+# Python distribution
+*.egg-info/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MongoDB local dumps
+dump/
