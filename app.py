@@ -58,10 +58,10 @@ app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME", "yoyur_email_id@gmail.com")
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME", "your_email_id@gmail.com")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", "your_mail_password")
 app.config["MAIL_DEFAULT_SENDER"] = os.getenv(
-    "MAIL_DEFAULT_SENDER", "dhartichodvadiya@gmail.com"
+    "MAIL_DEFAULT_SENDER", "your_email_id@gmail.com"
 )
 
 # Configuration for file uploads
