@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Management | Student Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-left .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            color: #1e293b;
+        }
+
+        .header-left h1 span {
+            color: #667eea;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+        }
+
+        .btn-xs {
+            padding: 4px 10px;
+            font-size: 11px;
+            border-radius: 8px;
+        }
+
+        .alert {
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 14px;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 18px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .stat-icon.green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .stat-icon.red {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .stat-icon.purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .stat-info .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        .stat-info .label {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .stat-info .sub {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    align-items: stretch;
+}
+
+.main-grid > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-grid > div .card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-grid > div .card .table-responsive {
+    flex: 1;
+}
+
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .main-grid > div .card {
+        flex: none;
+    }
+}
+
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(10px);
+            margin-bottom: 0;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-header h3 {
+            font-size: 18px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h3 i {
+            color: #667eea;
+        }
+
+        .card-header .badge-count {
+            background: #667eea;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #64748b;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        .data-table .amount {
+            font-weight: 600;
+        }
+
+        .data-table .amount.paid {
+            color: #10b981;
+        }
+
+        .data-table .amount.unpaid {
+            color: #ef4444;
+        }
+
+        .badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-unpaid {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            margin: 4px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        .progress-fill.green {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .progress-fill.red {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 520px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 22px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-header h2 i {
+            color: #667eea;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #1e293b;
+            transform: rotate(90deg);
+        }
+
+        .payment-summary {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .payment-summary .label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .payment-summary .amount {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .payment-summary .sub-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 500;
+            z-index: 99999;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: toastSlide 0.4s ease;
+            max-width: 90%;
+        }
+
+        .toast.success {
+            background: #10b981;
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        .toast.info {
+            background: #3b82f6;
+        }
+
+        .toast.warning {
+            background: #f59e0b;
+        }
+
+        @keyframes toastSlide {
+            from {
+                transform: translateX(-50%) translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+        }
+
+        .loading-state i {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .empty-state h4 {
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .receipt-content {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+
+        .receipt-content .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .receipt-content .row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-content .label {
+            color: #64748b;
+        }
+
+        .receipt-content .value {
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            .header {
+                padding: 16px 20px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .header-left h1 {
+                font-size: 20px;
+            }
+
+            .header-right {
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-info .value {
+                font-size: 20px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            .modal {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .payment-summary .amount {
+                font-size: 28px;
+            }
+
+            .toast {
+                font-size: 14px;
+                padding: 12px 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .stat-card {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .stat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .stat-info .value {
+                font-size: 17px;
+            }
+
+            .stat-info .label {
+                font-size: 11px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo-icon"><i class="fas fa-wallet"></i></div>
+                <h1>Fee <span>Management</span></h1>
+            </div>
+            <div class="header-right">
+                <span style="color: #64748b; font-size: 14px;"><i class="fas fa-user"></i> <span
+                        id="studentName">Student</span></span>
+                <a href="/student" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Dashboard</a>
+                <button onclick="logout()" class="btn btn-danger btn-sm"><i class="fas fa-sign-out-alt"></i>
+                    Logout</button>
+            </div>
+        </div>
+
+        <!-- Alerts -->
+        <div id="alertContainer">
+            <div id="alertMessage" class="alert"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-file-invoice"></i></div>
+                <div class="stat-info">
+                    <div class="value" id="totalFee">₹0</div>
+                    <div class="label">Total Fee</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <div class="value" id="paidFee">₹0</div>
+                    <div class="label">Paid Amount</div>
+                    <div class="sub" id="paidPercent">0%</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="stat-info">
+                    <div class="value" id="pendingFee">₹0</div>
+                    <div class="label">Pending Amount</div>
+                    <div class="sub" id="pendingDue">No due date</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon purple"><i class="fas fa-credit-card"></i></div>
+                <div class="stat-info">
+                    <div class="value" id="totalPayments">0</div>
+                    <div class="label">Total Payments</div>
+                    <div class="sub" id="lastPaymentDate">No payments yet</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Fee Structure -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list-ul"></i> Fee Structure</h3>
+                        <span class="badge-count" id="feeCount">0</span>
+                    </div>
+                    <div id="feeStructureContainer">
+                        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading fee structure...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment History -->
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-history"></i> Payment History</h3>
+                        <button onclick="loadPaymentHistory()" class="btn btn-outline btn-xs"><i
+                                class="fas fa-sync-alt"></i> Refresh</button>
+                    </div>
+                    <div id="paymentHistoryContainer">
+                        <div class="loading-state"><i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading payment history...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-credit-card"></i> Make Payment</h2>
+                <button class="modal-close" onclick="closePaymentModal()">×</button>
+            </div>
+            <div id="paymentAlert" class="alert" style="display:none;"></div>
+            <div class="payment-summary">
+                <div class="label">Amount to Pay</div>
+                <div class="amount" id="modalPendingAmount">₹0</div>
+                <div class="sub-label" id="modalSemester">Semester</div>
+            </div>
+            <div class="form-group">
+                <label for="payAmount">Amount to Pay (₹)</label>
+                <input type="number" id="payAmount" min="1" step="1" placeholder="Enter amount">
+            </div>
+            <div class="form-group">
+                <label for="payMethod">Payment Method</label>
+                <select id="payMethod">
+                    <option value="Razorpay">💳 Credit / Debit Card</option>
+                    <option value="UPI">📱 UPI</option>
+                    <option value="Net Banking">🏦 Net Banking</option>
+                </select>
+            </div>
+            <div
+                style="background: #f1f5f9; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-size: 13px; color: #64748b; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-lock" style="color: #667eea;"></i>
+                <span>Secure payment via <strong>Razorpay</strong>. Your transaction is encrypted and safe.</span>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closePaymentModal()">Cancel</button>
+                <button class="btn btn-primary" id="payNowBtn" onclick="processPayment()"><i class="fas fa-check"></i>
+                    Pay Now</button>
+            </div>
+        </div>
+    </div>
+
+   <!-- Receipt Modal -->
+<div class="modal-overlay" id="receiptModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h2><i class="fas fa-file-invoice"></i> Payment Receipt</h2>
+            <button class="modal-close" onclick="closeReceiptModal()">×</button>
+        </div>
+        <div id="receiptContent" class="receipt-content">
+            <div class="row"><span class="label">Student Name</span><span class="value" id="receiptStudentName">-</span></div>
+            <div class="row"><span class="label">Student ID</span><span class="value" id="receiptStudentId">-</span></div>
+            <div class="row"><span class="label">Course</span><span class="value" id="receiptCourse">-</span></div>
+            <div class="row"><span class="label">Receipt Number</span><span class="value" id="receiptNumber">-</span></div>
+            <div class="row"><span class="label">Date</span><span class="value" id="receiptDate">-</span></div>
+            <div class="row"><span class="label">Amount</span><span class="value" id="receiptAmount">-</span></div>
+            <div class="row"><span class="label">Payment Method</span><span class="value" id="receiptMethod">-</span></div>
+            <div class="row"><span class="label">Transaction ID</span><span class="value" id="receiptTxnId">-</span></div>
+            <div class="row"><span class="label">Status</span><span class="value" id="receiptStatus">-</span></div>
+            <div class="row"><span class="label">Semester</span><span class="value" id="receiptSemester">-</span></div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeReceiptModal()">Close</button>
+            <button class="btn btn-success" onclick="downloadReceiptPDF()"><i class="fas fa-download"></i> Download PDF</button>
+        </div>
+    </div>
+</div>
+
+    <script>
+        // ============================================================
+        // CONFIGURATION
+        // ============================================================
+        const API_BASE = '';
+        let authToken = sessionStorage.getItem("studentToken") || null;
+        let currentUser = null;
+        let selectedFeeId = null;
+        let maxPendingAmount = 0;
+        let currentFeeData = [];
+        let lastReceiptData = null;
+
+        // ============================================================
+// AUTH CHECK - FIXED to get course
+// ============================================================
+async function checkAuth() {
+    const savedUser = sessionStorage.getItem("studentUser");
+    if (savedUser && authToken) {
+        currentUser = JSON.parse(savedUser);
+        document.getElementById('studentName').textContent = currentUser.name || 'Student';
+        
+        // Fetch complete student data including course
+        try {
+            const res = await apiRequest(`/student/${currentUser.user_id}`, "GET", null, true);
+            if (res.status === 200 && res.data) {
+                currentUser = {
+                    ...currentUser,
+                    course: res.data.course || 'N/A',
+                    email: res.data.email || currentUser.email,
+                    phoneno: res.data.phoneno || currentUser.phoneno
+                };
+                // Update session storage
+                sessionStorage.setItem("studentUser", JSON.stringify(currentUser));
+                console.log('✅ Student data loaded:', currentUser);
+            }
+        } catch (error) {
+            console.error('Error fetching student data:', error);
+        }
+        return true;
+    }
+    return false;
+}
+
+        if (!checkAuth()) {
+            window.location.href = '/';
+        }
+
+        // ============================================================
+        // API REQUEST
+        // ============================================================
+        async function apiRequest(endpoint, method = "GET", body = null, needAuth = true) {
+            const headers = { "Content-Type": "application/json" };
+            if (needAuth && authToken) headers["token"] = authToken;
+            const options = { method, headers };
+            if (body) options.body = JSON.stringify(body);
+            try {
+                const res = await fetch(`${API_BASE}${endpoint}`, options);
+                const data = await res.json();
+                return { status: res.status, data };
+            } catch (error) {
+                console.error('API Error:', error);
+                return { status: 0, data: { message: "Server error. Please try again." } };
+            }
+        }
+
+        // ============================================================
+        // TOAST NOTIFICATIONS
+        // ============================================================
+        function showToast(message, type = 'info') {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+            toast.innerHTML = `${icons[type] || 'ℹ️'} ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4500);
+        }
+
+        // ============================================================
+        // ALERT MESSAGES
+        // ============================================================
+        function showAlert(message, type = 'info') {
+            const container = document.getElementById('alertMessage');
+            container.className = `alert alert-${type} show`;
+            container.innerHTML = message;
+        }
+
+        function hideAlert() {
+            const container = document.getElementById('alertMessage');
+            container.className = 'alert';
+            container.innerHTML = '';
+        }
+
+        // ============================================================
+        // LOAD FEE STRUCTURE
+        // ============================================================
+        async function loadFeeStructure() {
+            const container = document.getElementById('feeStructureContainer');
+            try {
+                const res = await apiRequest(`/api/fee/student/${currentUser.user_id}`, "GET", null, true);
+                if (res.status === 200 && res.data.fees && res.data.fees.length > 0) {
+                    currentFeeData = res.data.fees;
+                    document.getElementById('feeCount').textContent = currentFeeData.length;
+                    updateStats(res.data.summary);
+
+                    let html = `<div class="table-responsive"><table class="data-table">
+                    <thead><tr><th>Semester</th><th>Total</th><th>Paid</th><th>Pending</th><th>Progress</th><th>Status</th><th>Action</th></tr></thead><tbody>`;
+
+                    currentFeeData.forEach(f => {
+                        const statusClass = f.status === 'Paid' ? 'paid' : 'unpaid';
+                        const canPay = f.status !== 'Paid' && f.pending_amount > 0;
+                        const progressPercent = f.total_fee > 0 ? (f.paid_amount / f.total_fee * 100) : 0;
+                        const progressClass = progressPercent >= 100 ? 'green' : 'red';
+
+                        html += `<tr>
+                        <td><strong>${f.semester || '-'}</strong></td>
+                        <td class="amount">₹${f.total_fee.toLocaleString()}</td>
+                        <td class="amount paid">₹${f.paid_amount.toLocaleString()}</td>
+                        <td class="amount ${statusClass}">₹${f.pending_amount.toLocaleString()}</td>
+                        <td>
+                            <div class="progress-wrapper">
+                                <div class="progress-bar"><div class="progress-fill ${progressClass}" style="width:${progressPercent}%;"></div></div>
+                                <div class="progress-text">${progressPercent.toFixed(0)}% paid</div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-${statusClass}">${f.status}</span></td>
+                        <td>
+                            ${canPay ? `<button class="btn btn-success btn-xs" onclick="openPaymentModal('${f.id}', ${f.pending_amount}, '${f.semester || 'Semester'}')"><i class="fas fa-credit-card"></i> Pay</button>` :
+                                `<span style="color:#10b981; font-weight:500;"><i class="fas fa-check-circle"></i> Paid</span>`}
+                        </td>
+                    </tr>`;
+                    });
+
+                    html += `</tbody></table></div>`;
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `<div class="empty-state"><i class="fas fa-file-invoice"></i><h4>No Fee Structure Found</h4><p>Your fee structure has not been set up yet.</p><p style="font-size:13px;margin-top:8px;">Please contact the administration for assistance.</p></div>`;
+                }
+            } catch (error) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-circle"></i><h4>Error Loading Fees</h4><p>Could not load fee structure. Please try again later.</p></div>`;
+            }
+        }
+
+        // ============================================================
+        // UPDATE STATS
+        // ============================================================
+        function updateStats(summary) {
+            if (!summary) return;
+            document.getElementById('totalFee').textContent = `₹${summary.total_fee.toLocaleString()}`;
+            document.getElementById('paidFee').textContent = `₹${summary.total_paid.toLocaleString()}`;
+            document.getElementById('pendingFee').textContent = `₹${summary.total_pending.toLocaleString()}`;
+            const percent = summary.total_fee > 0 ? (summary.total_paid / summary.total_fee * 100) : 0;
+            document.getElementById('paidPercent').textContent = `${percent.toFixed(1)}%`;
+            if (summary.total_pending > 0) {
+                showAlert(`⚠️ You have a pending fee of <strong>₹${summary.total_pending.toLocaleString()}</strong>. Please pay before the due date.`, 'warning');
+            } else {
+                hideAlert();
+                showAlert('✅ All fees are paid! You have no pending dues.', 'success');
+            }
+        }
+
+        // ============================================================
+        // LOAD PAYMENT HISTORY
+        // ============================================================
+        async function loadPaymentHistory() {
+            const container = document.getElementById('paymentHistoryContainer');
+
+            container.innerHTML = `<div class="loading-state"><i class="fas fa-spinner fa-spin"></i><p>Loading payment history...</p></div>`;
+
+            try {
+                const res = await apiRequest(`/api/fee/payments/${currentUser.user_id}`, "GET", null, true);
+
+                if (res.status === 200 && res.data && res.data.payments && res.data.payments.length > 0) {
+                    let html = `<div class="table-responsive"><table class="data-table">
+                        <thead><tr>
+                            <th>Date</th>
+                            <th>Semester</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Receipt</th>
+                        </tr></thead>
+                        <tbody>`;
+
+                    res.data.payments.forEach(p => {
+                        const date = p.payment_date ? new Date(p.payment_date).toLocaleDateString('en-IN', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        }) : '-';
+
+                        html += `<tr>
+                            <td>${date}</td>
+                            <td>${p.semester || '-'}</td>
+                            <td class="amount paid">₹${p.amount.toLocaleString()}</td>
+                            <td>${p.payment_method || '-'}</td>
+                            <td>
+                                <button class="btn btn-outline btn-xs" onclick="viewReceipt('${p.receipt_number}')">
+                                    <i class="fas fa-file-pdf"></i> View
+                                </button>
+                            </td>
+                        </tr>`;
+                    });
+
+                    html += `</tbody></table></div>
+                        <div style="margin-top: 10px; color: #94a3b8; font-size: 13px; text-align: center;">
+                            Showing ${res.data.payments.length} payment(s)
+                        </div>`;
+                    container.innerHTML = html;
+                } else {
+                    container.innerHTML = `<div class="empty-state">
+                        <i class="fas fa-clock" style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;"></i>
+                        <h4>No Payment History</h4>
+                        <p>You haven't made any payments yet.</p>
+                        <p style="font-size:13px;margin-top:8px;color:#94a3b8;">Your first payment will appear here.</p>
+                        
+                    </div>`;
+                }
+            } catch (error) {
+                console.error('Error loading payment history:', error);
+                container.innerHTML = `<div class="empty-state">
+                    <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 12px; opacity: 0.5;"></i>
+                    <h4>Error Loading History</h4>
+                    <p>Could not load payment history. Please try refreshing.</p>
+                    <button onclick="loadPaymentHistory()" class="btn btn-primary btn-sm" style="margin-top:10px;">
+                        <i class="fas fa-sync-alt"></i> Retry
+                    </button>
+                </div>`;
+            }
+        }
+
+        // ============================================================
+        // PAYMENT MODAL
+        // ============================================================
+        function openPaymentModal(feeId, pendingAmount, semester) {
+            selectedFeeId = feeId;
+            maxPendingAmount = pendingAmount;
+            document.getElementById('modalPendingAmount').textContent = `₹${pendingAmount.toLocaleString()}`;
+            document.getElementById('modalSemester').textContent = semester || 'Semester';
+            document.getElementById('payAmount').value = pendingAmount;
+            document.getElementById('payAmount').max = pendingAmount;
+            document.getElementById('payAmount').min = 1;
+            document.getElementById('paymentModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('active');
+            document.body.style.overflow = '';
+            selectedFeeId = null;
+        }
+
+        // ============================================================
+        // PROCESS PAYMENT
+        // ============================================================
+        async function processPayment() {
+            const amount = parseInt(document.getElementById('payAmount').value);
+            const method = document.getElementById('payMethod').value;
+
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount', 'error');
+                return;
+            }
+            if (amount > maxPendingAmount) {
+                showToast(`Amount cannot exceed ₹${maxPendingAmount.toLocaleString()}`, 'error');
+                return;
+            }
+
+            const btn = document.getElementById('payNowBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Processing...';
+
+            try {
+                const orderRes = await apiRequest('/api/fee/razorpay/order', 'POST', {
+                    amount: amount,
+                    student_id: currentUser.user_id,
+                    fee_structure_id: selectedFeeId
+                }, true);
+
+                if (orderRes.status !== 200) {
+                    showToast('Failed to create payment order', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    return;
+                }
+
+                const order = orderRes.data;
+                const options = {
+                    key: order.razorpay_key_id || '',
+                    amount: order.amount,
+                    currency: 'INR',
+                    name: 'Student Portal',
+                    description: `Fee Payment - ${order.semester || 'Semester'}`,
+                    order_id: order.order_id,
+                    prefill: {
+                        name: currentUser.name || 'Student',
+                        email: currentUser.email || '',
+                        contact: currentUser.phoneno || '',
+                    },
+                    theme: { color: '#667eea' },
+                    modal: {
+                        ondismiss: function () {
+                            showToast('Payment cancelled', 'info');
+                            btn.disabled = false;
+                            btn.innerHTML = originalText;
+                        }
+                    },
+                    handler: async function (response) {
+                        try {
+                            const verifyRes = await apiRequest('/api/fee/razorpay/verify', 'POST', {
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                                fee_structure_id: selectedFeeId,
+                                student_id: currentUser.user_id,
+                                amount: amount
+                            }, true);
+
+                            if (verifyRes.status === 200) {
+                                showToast('✅ Payment successful! Receipt generated.', 'success');
+                                closePaymentModal();
+
+                                const receiptData = {
+                                    student_name: currentUser.name || 'Student',
+                                    receipt_number: verifyRes.data.receipt_number,
+                                    date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
+                                    amount: `₹${amount.toLocaleString()}`,
+                                    method: method,
+                                    txn_id: response.razorpay_payment_id,
+                                    status: 'Success',
+                                    semester: order.semester || 'Semester'
+                                };
+                                lastReceiptData = receiptData;
+                                displayReceipt(receiptData);
+                                loadFeeStructure();
+                                loadPaymentHistory();
+                            } else {
+                                showToast(verifyRes.data.message || 'Payment verification failed', 'error');
+                            }
+                        } catch (error) {
+                            showToast('Payment verification failed', 'error');
+                        }
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (error) {
+                console.error('Payment error:', error);
+                showToast('Payment failed. Please try again.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        }
+
+
+// ============================================================
+// VIEW RECEIPT - FIXED to get course from API
+// ============================================================
+async function viewReceipt(receiptNumber) {
+    try {
+        showToast('Loading receipt details...', 'info');
+        
+        // Try the direct API first
+        const res = await apiRequest(`/api/fee/payment/${receiptNumber}`, "GET", null, true);
+        
+        if (res.status === 200 && res.data) {
+            const payment = res.data;
+            const receiptData = {
+                student_name: currentUser?.name || 'Student',
+                course: payment.course || currentUser?.course || 'N/A',
+                receipt_number: payment.receipt_number || receiptNumber,
+                date: payment.payment_date ? new Date(payment.payment_date).toLocaleDateString('en-IN', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                }) : new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
+                amount: `₹${payment.amount.toLocaleString()}`,
+                method: payment.payment_method || 'N/A',
+                txn_id: payment.transaction_id || 'N/A',
+                status: payment.status || 'Success',
+                semester: payment.semester || 'N/A'
+            };
+            lastReceiptData = receiptData;
+            displayReceipt(receiptData);
+            showToast('Receipt loaded successfully!', 'success');
+        } else {
+            // If direct API fails, try from payment history
+            const historyRes = await apiRequest(`/api/fee/payments/${currentUser.user_id}`, "GET", null, true);
+            if (historyRes.status === 200 && historyRes.data.payments) {
+                const payment = historyRes.data.payments.find(p => p.receipt_number === receiptNumber);
+                if (payment) {
+                    const receiptData = {
+                        student_name: currentUser?.name || 'Student',
+                        course: currentUser?.course || 'N/A',
+                        receipt_number: payment.receipt_number || receiptNumber,
+                        date: payment.payment_date ? new Date(payment.payment_date).toLocaleDateString('en-IN', { 
+                            day: '2-digit', 
+                            month: 'long', 
+                            year: 'numeric' 
+                        }) : new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
+                        amount: `₹${payment.amount.toLocaleString()}`,
+                        method: payment.payment_method || 'N/A',
+                        txn_id: payment.transaction_id || 'N/A',
+                        status: payment.status || 'Success',
+                        semester: payment.semester || 'N/A'
+                    };
+                    lastReceiptData = receiptData;
+                    displayReceipt(receiptData);
+                    showToast('Receipt loaded successfully!', 'success');
+                    return;
+                }
+            }
+            showToast('Receipt not found', 'error');
+        }
+    } catch (error) {
+        console.error('Error loading receipt:', error);
+        showToast('Error loading receipt details', 'error');
+    }
+}
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+// ============================================================
+// DISPLAY RECEIPT - UPDATED with all fields
+// ============================================================
+function displayReceipt(data) {
+    document.getElementById('receiptStudentName').textContent = data.student_name || currentUser?.name || 'Student';
+    document.getElementById('receiptStudentId').textContent = currentUser?.user_id || 'N/A';
+    document.getElementById('receiptCourse').textContent = data.course || currentUser?.course || 'N/A';
+    document.getElementById('receiptNumber').textContent = data.receipt_number || '-';
+    document.getElementById('receiptDate').textContent = data.date || '-';
+    document.getElementById('receiptAmount').textContent = data.amount || '-';
+    document.getElementById('receiptMethod').textContent = data.method || '-';
+    document.getElementById('receiptTxnId').textContent = data.txn_id || '-';
+    document.getElementById('receiptStatus').textContent = data.status || '-';
+    document.getElementById('receiptSemester').textContent = data.semester || '-';
+    document.getElementById('receiptModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// ============================================================
+// DOWNLOAD RECEIPT AS PDF - FIXED with course
+// ============================================================
+function downloadReceiptPDF() {
+    if (!lastReceiptData) {
+        showToast('No receipt data to download', 'error');
+        return;
+    }
+
+    const data = lastReceiptData;
+    const studentName = currentUser?.name || 'Student';
+    const studentId = currentUser?.user_id || 'N/A';
+    // Get course from currentUser or from the receipt data
+    const studentCourse = currentUser?.course || data.course || 'N/A';
+
+    showToast('📄 Generating receipt...', 'info');
+
+    const container = document.createElement('div');
+    container.style.cssText = `
+        padding: 40px;
+        font-family: 'Inter', Arial, sans-serif;
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 16px;
+    `;
+
+    container.innerHTML = `
+        <div style="text-align: center; border-bottom: 3px solid #667eea; padding-bottom: 20px; margin-bottom: 25px;">
+            <h1 style="color: #667eea; font-size: 28px; margin: 0 0 5px 0;">📄 Payment Receipt</h1>
+            <p style="color: #64748b; font-size: 14px;">Student Portal - Official Payment Confirmation</p>
+            <div style="background: #667eea; color: white; padding: 4px 16px; border-radius: 20px; display: inline-block; margin-top: 10px; font-size: 14px;">#${data.receipt_number || 'N/A'}</div>
+        </div>
+        
+        <div style="background: #f8fafc; border-radius: 8px; padding: 15px 20px; margin: 15px 0 20px 0;">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px;">
+                <span style="color: #64748b;">Student Name</span>
+                <span style="font-weight: 600; color: #1e293b;">${studentName}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px;">
+                <span style="color: #64748b;">Student ID</span>
+                <span style="font-weight: 600; color: #1e293b;">${studentId}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px;">
+                <span style="color: #64748b;">Course</span>
+                <span style="font-weight: 600; color: #1e293b;">${studentCourse}</span>
+            </div>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Receipt Number</span>
+                <span style="font-weight: 600; color: #1e293b; font-size: 14px;">${data.receipt_number || 'N/A'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Date</span>
+                <span style="font-weight: 600; color: #1e293b; font-size: 14px;">${data.date || new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Time</span>
+                <span style="font-weight: 600; color: #1e293b; font-size: 14px;">${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Amount</span>
+                <span style="font-weight: 700; color: #10b981; font-size: 24px;">${data.amount || '₹0'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Payment Method</span>
+                <span style="font-weight: 600; color: #1e293b; font-size: 14px;">${data.method || 'N/A'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Transaction ID</span>
+                <span style="font-weight: 600; color: #1e293b; font-family: monospace; font-size: 12px;">${data.txn_id || 'N/A'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Semester</span>
+                <span style="font-weight: 600; color: #1e293b; font-size: 14px;">${data.semester || 'N/A'}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                <span style="color: #64748b; font-weight: 500; font-size: 14px;">Status</span>
+                <span style="font-weight: 700; color: #10b981; font-size: 14px;">✅ ${data.status || 'Success'}</span>
+            </div>
+        </div>
+        
+        <div style="text-align: center; border-top: 2px solid #e2e8f0; padding-top: 20px; margin-top: 20px; color: #94a3b8; font-size: 12px;">
+            <p>This is an officially generated receipt from <strong style="color: #667eea;">Student Portal</strong></p>
+            <p style="margin-top: 5px;">Thank you for your payment!</p>
+            <p style="margin-top: 10px; font-size: 11px; color: #cbd5e1;">Generated on: ${new Date().toLocaleString()}</p>
+        </div>
+        
+        <div style="color: #e2e8f0; font-size: 60px; text-align: center; margin-top: 20px; opacity: 0.3; font-weight: bold; letter-spacing: 10px;">PAID</div>
+    `;
+
+    html2pdf()
+        .set({
+            margin: 10,
+            filename: `Receipt_${data.receipt_number || 'payment'}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                useCORS: true,
+                logging: false
+            },
+            jsPDF: { 
+                unit: 'mm', 
+                format: 'a4', 
+                orientation: 'portrait' 
+            },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        })
+        .from(container)
+        .save()
+        .then(() => {
+            showToast('📄 Receipt downloaded successfully!', 'success');
+        })
+        .catch((error) => {
+            console.error('PDF generation error:', error);
+            showToast('Failed to generate PDF. Please try again.', 'error');
+        });
+}
+        // ============================================================
+        // LOGOUT
+        // ============================================================
+        function logout() {
+            sessionStorage.removeItem("studentToken");
+            sessionStorage.removeItem("studentUser");
+            localStorage.removeItem("studentToken");
+            localStorage.removeItem("studentUser");
+            window.location.href = '/';
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            loadFeeStructure();
+            loadPaymentHistory();
+
+            document.getElementById('paymentModal').addEventListener('click', function (e) {
+                if (e.target === this) closePaymentModal();
+            });
+            document.getElementById('receiptModal').addEventListener('click', function (e) {
+                if (e.target === this) closeReceiptModal();
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closePaymentModal();
+                    closeReceiptModal();
+                }
+            });
+            document.getElementById('payAmount').addEventListener('input', function () {
+                let val = parseInt(this.value);
+                if (isNaN(val) || val < 1) this.value = 1;
+                if (val > maxPendingAmount) this.value = maxPendingAmount;
+            });
+        });
+    </script>
+
+</body>
+
+</html>

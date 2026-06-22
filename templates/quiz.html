@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnSphere Quiz | My Learning Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .quiz-container {
+            background: #1e293b;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .timer-section {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .timer.warning {
+            color: #ff6b6b;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .quiz-main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .questions-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .section-header {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        body.dark-mode .section-header {
+            background: #334155;
+        }
+
+        .question-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        body.dark-mode .question-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #1e293b;
+        }
+
+        body.dark-mode .question-text {
+            color: #f1f5f9;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        body.dark-mode .option-item {
+            background: #334155;
+            border-color: #475569;
+        }
+
+        .option-item:hover {
+            border-color: #667eea;
+        }
+
+        .option-item.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .option-letter {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        body.dark-mode .option-letter {
+            background: #1e293b;
+        }
+
+        .nav-panel {
+            width: 280px;
+            min-width: 200px;
+            background: #f1f5f9;
+            border-left: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        body.dark-mode .nav-panel {
+            background: #334155;
+        }
+
+        .question-grid {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 70px));
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .grid-btn {
+            aspect-ratio: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark-mode .grid-btn {
+            background: #1e293b;
+        }
+
+        .grid-btn.answered {
+            background: #10b981;
+            color: white;
+        }
+
+        .grid-btn.current {
+            background: #2a5298;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .quiz-footer {
+            padding: 16px 24px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        body.dark-mode .quiz-footer {
+            background: #1e293b;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .result-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 20000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .result-modal.active {
+            display: flex;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        body.dark-mode .result-card {
+            background: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-main {
+                flex-direction: column;
+            }
+
+            .nav-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+                max-height: 200px;
+            }
+
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(45px, 55px));
+            }
+
+            .questions-panel {
+                max-height: calc(100vh - 300px);
+            }
+
+            .timer {
+                font-size: 20px;
+            }
+
+            .quiz-header {
+                padding: 10px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 45px));
+                gap: 6px;
+            }
+
+            .grid-btn {
+                font-size: 11px;
+            }
+        }
+
+        /* Tab Warning Styles */
+        .tab-warning {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: #ef4444;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 20001;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .tab-warning.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .tab-warning i {
+            font-size: 18px;
+        }
+
+        /* Full Screen Overlay */
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #fullscreen-overlay.hidden {
+            display: none;
+        }
+
+        .fullscreen-message {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .fullscreen-message h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .fullscreen-message p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .fullscreen-message button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 18px;
+            background: white;
+            color: #667eea;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .fullscreen-message button:hover {
+            transform: scale(1.05);
+        }
+
+        .fullscreen-warning {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 100000;
+            display: none;
+            animation: pulse 1s infinite;
+        }
+
+        .fullscreen-warning.show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fullscreen Overlay -->
+    <div id="fullscreen-overlay">
+        <div class="fullscreen-message">
+            <i class="fas fa-expand" style="font-size: 48px; margin-bottom: 20px;"></i>
+            <h2>Enter Full Screen Mode</h2>
+            <p>This test requires full-screen mode to prevent cheating.</p>
+            <p>Click the button below to enter full-screen mode.</p>
+            <button id="enter-fullscreen-btn"><i class="fas fa-expand"></i> Enter Full Screen</button>
+        </div>
+    </div>
+
+    <div id="fullscreen-warning" class="fullscreen-warning">
+        <i class="fas fa-exclamation-triangle"></i> Warning: You exited full-screen mode! Please re-enter immediately.
+    </div>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <div><strong>LearnSphere</strong> <small> Assessment</small></div>
+            <div class="timer-section">
+                <div class="timer-label">Time Remaining</div>
+                <div class="timer" id="timer">15:00</div>
+            </div>
+            <div><i class="fas fa-shield-alt"></i> Secure Mode</div>
+        </div>
+
+        <div class="quiz-main">
+            <div class="questions-panel">
+                <div class="section-header">
+                    <div id="sectionTitle">Loading...</div>
+                    <div id="sectionStats">Question 0 of 0</div>
+                </div>
+                <div id="currentQuestion"></div>
+            </div>
+            <div class="nav-panel">
+                <div class="question-grid" id="questionGrid"></div>
+            </div>
+        </div>
+
+        <div class="quiz-footer">
+            <div>
+                <button id="clearResponseBtn" class="btn btn-outline"><i class="fas fa-eraser"></i> Clear</button>
+            </div>
+            <div>
+                <button id="prevBtn" class="btn btn-outline">◀ Previous</button>
+                <button id="nextBtn" class="btn btn-outline">Next ▶</button>
+            </div>
+            <button id="submitBtn" class="btn btn-danger"><i class="fas fa-check-circle"></i> Submit Test</button>
+        </div>
+    </div>
+
+    <!-- Result Modal - MOVED OUTSIDE quiz-footer -->
+    <div id="resultModal" class="result-modal">
+        <div class="result-card">
+            <h2 style="text-align:center;">Test Report</h2>
+            <div style="text-align:center; font-size:48px; margin:20px 0;" id="resultScore">0/0</div>
+            <div id="resultDetails"></div>
+            <div style="text-align:center; margin-top:20px;">
+                <button id="closeResultBtn" class="btn btn-primary">Close</button>
+                <button id="retakeBtn" class="btn btn-outline">Retake Test</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample Quiz Data - 20 Questions across 4 sections
+        const questions = [
+            // Section 1: Quantitative Aptitude (Q1-Q5)
+            { id: 1, text: "If a shopkeeper sells an item at 20% profit, and the cost price is ₹500, what is the selling price?", options: ["₹550", "₹600", "₹580", "₹620"], correct: 1, marks: 5, section: "Quantitative Aptitude" },
+            { id: 2, text: "The average of 5 numbers is 18. If one number is removed, the average becomes 16. What is the removed number?", options: ["20", "22", "24", "26"], correct: 2, marks: 5, section: "Quantitative Aptitude" },
+            { id: 3, text: "A train 150m long passes a pole in 10 seconds. What is its speed in km/h?", options: ["54 km/h", "60 km/h", "45 km/h", "72 km/h"], correct: 0, marks: 5, section: "Quantitative Aptitude" },
+            { id: 4, text: "If x + y = 12 and xy = 27, find x² + y²", options: ["90", "100", "110", "120"], correct: 0, marks: 5, section: "Quantitative Aptitude" },
+            { id: 5, text: "What is the compound interest on ₹1000 at 10% per annum for 2 years?", options: ["₹200", "₹210", "₹220", "₹230"], correct: 1, marks: 5, section: "Quantitative Aptitude" },
+
+            // Section 2: Logical Reasoning (Q6-Q10)
+            { id: 6, text: "If 'MAN' is coded as 'NZM', how is 'BOY' coded?", options: ["CPZ", "CNX", "CPX", "CNZ"], correct: 0, marks: 5, section: "Logical Reasoning" },
+            { id: 7, text: "Find the odd one out: Apple, Mango, Orange, Banana, Carrot", options: ["Apple", "Mango", "Carrot", "Banana"], correct: 2, marks: 5, section: "Logical Reasoning" },
+            { id: 8, text: "Complete the series: 2, 6, 12, 20, ?", options: ["28", "30", "32", "34"], correct: 1, marks: 5, section: "Logical Reasoning" },
+            { id: 9, text: "If today is Monday, what day will it be after 100 days?", options: ["Monday", "Tuesday", "Wednesday", "Thursday"], correct: 2, marks: 5, section: "Logical Reasoning" },
+            { id: 10, text: "Which word is different from others? Triangle, Square, Circle, Rectangle", options: ["Triangle", "Square", "Circle", "Rectangle"], correct: 2, marks: 5, section: "Logical Reasoning" },
+
+            // Section 3: English Language (Q11-Q15)
+            { id: 11, text: "Choose the synonym of 'ABUNDANT'", options: ["Plentiful", "Scarce", "Limited", "Rare"], correct: 0, marks: 5, section: "English Language" },
+            { id: 12, text: "Fill in the blank: She ____ to the market yesterday.", options: ["go", "goes", "went", "gone"], correct: 2, marks: 5, section: "English Language" },
+            { id: 13, text: "Find the correctly spelled word", options: ["Accommodate", "Acommodate", "Accomodate", "Acommodate"], correct: 0, marks: 5, section: "English Language" },
+            { id: 14, text: "Identify the antonym of 'OPTIMISTIC'", options: ["Hopeful", "Cheerful", "Pessimistic", "Confident"], correct: 2, marks: 5, section: "English Language" },
+            { id: 15, text: "Choose the correct passive voice: 'They are building a house'", options: ["A house is built by them", "A house is being built by them", "A house was built by them", "A house has been built by them"], correct: 1, marks: 5, section: "English Language" },
+
+            // Section 4: Programming & Computer Science (Q16-Q20)
+            { id: 16, text: "What is the output of: console.log(typeof null)?", options: ["null", "undefined", "object", "number"], correct: 2, marks: 5, section: "Programming" },
+            { id: 17, text: "Which of the following is NOT a programming language?", options: ["Python", "Java", "HTML", "C++"], correct: 2, marks: 5, section: "Programming" },
+            { id: 18, text: "What does CPU stand for?", options: ["Central Processing Unit", "Computer Processing Unit", "Central Program Unit", "Core Processing Unit"], correct: 0, marks: 5, section: "Programming" },
+            { id: 19, text: "Which data structure uses LIFO?", options: ["Queue", "Stack", "Array", "Linked List"], correct: 1, marks: 5, section: "Programming" },
+            { id: 20, text: "What is the time complexity of binary search?", options: ["O(1)", "O(n)", "O(log n)", "O(n²)"], correct: 2, marks: 5, section: "Programming" }
+        ];
+
+        let currentIndex = 0;
+        let answers = {};
+        let shuffledQuestions = [];
+        let timeRemaining = 900; // 15 minutes (15 * 60 = 900 seconds)
+        let timerInterval = null;
+        let tabSwitchCount = 0;
+        let fullScreenExitCount = 0;  // ADD THIS LINE
+        let activityLog = [];
+        let quizStarted = false;
+        const MAX_TAB_SWITCHES = 2;
+        const MAX_FULLSCREEN_EXITS = 2;     // Add this - allows 2 warnings, 3rd = auto-submit
+
+        // Full Screen Management
+        function requestFullScreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+
+        function exitFullScreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+        function isFullScreen() {
+            return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
+        }
+
+        function showFullScreenWarning() {
+            const warning = document.getElementById('fullscreen-warning');
+            if (warning) {
+                warning.classList.add('show');
+                setTimeout(() => {
+                    warning.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        function startQuiz() {
+            const overlay = document.getElementById('fullscreen-overlay');
+            overlay.classList.add('hidden');
+            quizStarted = true;
+
+            // Force reset counters
+            tabSwitchCount = 0;
+            fullScreenExitCount = 0;
+
+            // Clear any saved progress that might have old violations
+            localStorage.removeItem('quiz_progress');
+
+            // Listen for full screen change events
+            document.addEventListener('fullscreenchange', () => {
+                if (!quizStarted) return;
+
+                if (!isFullScreen()) {
+                    fullScreenExitCount++;
+                    logActivity(`Full-screen exit detected (Count: ${fullScreenExitCount}`);
+                    showFullScreenWarning();
+
+                    // Check for 3rd strike
+                    if (fullScreenExitCount >= 3) {
+                        logActivity(`Test auto-submitted due to full-screen exits (Count: ${fullScreenExitCount})`);
+                        alert(`❌ TEST AUTO-SUBMITTED!\n\nYou have exited full-screen mode ${fullScreenExitCount} times, which violates the test rules.\nYour test has been automatically submitted.\n\nFull-screen exits: ${fullScreenExitCount}`);
+                        submitQuiz();
+                        return;
+                    }
+
+                    // Show warning with remaining attempts
+                    const remainingAttempts = 3 - fullScreenExitCount;
+                    if (remainingAttempts === 1) {
+                        alert(`⚠️ FINAL WARNING: You have exited full-screen ${fullScreenExitCount} time(s).\n\nYour test will be AUTO-SUBMITTED on the next exit!\n\nRemaining attempts: ${remainingAttempts}`);
+                    } else if (fullScreenExitCount > 0) {
+                        alert(`⚠️ WARNING: You have exited full-screen ${fullScreenExitCount} time(s).\n\nRemaining attempts before auto-submit: ${remainingAttempts}`);
+                    }
+
+                    // Force re-enter full screen
+                    setTimeout(() => {
+                        if (!isFullScreen() && quizStarted) {
+                            requestFullScreen();
+                        }
+                    }, 500);
+                }
+            });
+
+            initQuiz();
+            startTimer();
+        }
+
+
+        function shuffleArray(arr) {
+            const newArr = [...arr];
+            for (let i = newArr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+            }
+            return newArr;
+        }
+
+        function logActivity(action) {
+            activityLog.push({
+                action: action,
+                timestamp: new Date().toISOString()
+            });
+            console.log("Activity logged:", action);
+        }
+
+        // Tab switch detection with 3-strike rule
+        function setupTabSwitchDetection() {
+            let hiddenTime = 0;
+
+            document.addEventListener('visibilitychange', function () {
+                if (!quizStarted) return;
+
+                if (document.hidden) {
+                    hiddenTime = Date.now();
+                    tabSwitchCount++;
+                    logActivity(`Tab switched away (Count: ${tabSwitchCount})`);
+
+                    // Show warning
+                    const warning = document.getElementById('tabWarning');
+                    if (warning) {
+                        warning.classList.add('show');
+                        setTimeout(() => {
+                            warning.classList.remove('show');
+                        }, 3000);
+                    }
+
+                    // Check if this is the 3rd strike
+                    if (tabSwitchCount >= 3) {
+                        logActivity(`Test auto-submitted due to tab switch (Count: ${tabSwitchCount})`);
+                        alert(`❌ TEST AUTO-SUBMITTED!\n\nYou have switched tabs ${tabSwitchCount} times, which violates the test rules.\nYour test has been automatically submitted.\n\nTab switches detected: ${tabSwitchCount}`);
+                        submitQuiz();
+                        return;
+                    }
+
+                    // Show alert with remaining attempts
+                    const remainingAttempts = 3 - tabSwitchCount;
+                    if (remainingAttempts === 1) {
+                        alert(`⚠️ FINAL WARNING: You have switched tabs ${tabSwitchCount} time(s).\n\nYour test will be AUTO-SUBMITTED on the NEXT tab switch!\n\nRemaining attempts: ${remainingAttempts}`);
+                    } else if (tabSwitchCount > 0) {
+                        alert(`⚠️ WARNING: You have switched tabs ${tabSwitchCount} time(s).\n\nRemaining attempts before auto-submit: ${remainingAttempts}`);
+                    }
+
+                } else {
+                    const timeAway = Math.floor((Date.now() - hiddenTime) / 1000);
+                    logActivity(`Returned to tab after ${timeAway} seconds`);
+                    if (timeAway > 10) {
+                        alert(`⚠️ You were away for ${timeAway} seconds. This has been recorded.\nRemaining attempts: ${3 - tabSwitchCount}`);
+                    }
+
+                    // 🔥 ADD THIS - Force re-enter full screen when coming back to the tab
+                    setTimeout(() => {
+                        if (!isFullScreen() && quizStarted) {
+                            logActivity("Auto re-entering full-screen on tab return");
+                            requestFullScreen();
+                        }
+                    }, 500);
+                }
+            });
+        }
+        // Prevent copy/paste/right-click
+        function setupSecurityMeasures() {
+            document.addEventListener('contextmenu', (e) => {
+                if (quizStarted) {
+                    e.preventDefault();
+                    logActivity("Right-click attempted");
+                    return false;
+                }
+            });
+
+            document.addEventListener('copy', (e) => {
+                if (quizStarted) {
+                    e.preventDefault();
+                    logActivity("Copy attempted");
+                }
+            });
+
+            document.addEventListener('paste', (e) => {
+                if (quizStarted) {
+                    e.preventDefault();
+                    logActivity("Paste attempted");
+                }
+            });
+
+            // Prevent keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (!quizStarted) return;
+
+                if (e.key === 'F5' || (e.ctrlKey && e.key === 'r') || (e.ctrlKey && e.shiftKey && e.key === 'R')) {
+                    e.preventDefault();
+                    logActivity("Refresh attempt blocked");
+                    alert("Refreshing is disabled during the test!");
+                }
+                if (e.key === 'F11') {
+                    e.preventDefault();
+                    logActivity("F11 pressed");
+                }
+                if (e.altKey && e.key === 'Tab') {
+                    logActivity("Alt+Tab attempt detected");
+                }
+            });
+        }
+
+        function initQuiz() {
+
+            // Force reset counters when initializing a new quiz session
+            tabSwitchCount = 0;
+            fullScreenExitCount = 0;
+
+            shuffledQuestions = shuffleArray(questions);
+            answers = {};
+            currentIndex = 0;
+            tabSwitchCount = 0;
+            fullScreenExitCount = 0;
+            activityLog = [];
+
+            loadProgress();
+
+            renderCurrentQuestion();
+            renderQuestionGrid();
+            updateSectionStats();
+
+            // Setup security
+            setupTabSwitchDetection();
+            setupSecurityMeasures();
+        }
+
+        function getCurrentSection() {
+            if (!shuffledQuestions.length) return "Loading...";
+            return shuffledQuestions[currentIndex].section;
+        }
+
+        function renderCurrentQuestion() {
+            if (!shuffledQuestions.length) return;
+            const q = shuffledQuestions[currentIndex];
+            const selected = answers[currentIndex];
+
+            // 🔥 ADD THIS - Hide Next button on last question
+            const nextBtn = document.getElementById('nextBtn');
+            if (nextBtn) {
+                if (currentIndex === shuffledQuestions.length - 1) {
+                    nextBtn.style.display = 'none';
+                } else {
+                    nextBtn.style.display = 'inline-block';
+                }
+            }
+
+            const container = document.getElementById('currentQuestion');
+            container.innerHTML = `
+            <div class="question-card">
+                <div class="question-text">
+                    <strong>Q${currentIndex + 1}. ${q.text}</strong>
+                    <span style="font-size:12px; color:#667eea; margin-left:10px;">(${q.marks} marks)</span>
+                </div>
+                <div class="options-list">
+                    ${q.options.map((opt, idx) => `
+                        <div class="option-item ${selected === idx ? 'selected' : ''}" onclick="selectAnswer(${currentIndex}, ${idx})">
+                            <div class="option-letter">${String.fromCharCode(65 + idx)}</div>
+                            <div>${opt}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('questionGrid');
+            grid.innerHTML = '';
+
+            shuffledQuestions.forEach((q, idx) => {
+                const isAnswered = answers[idx] !== undefined;
+                const isCurrent = idx === currentIndex;
+                const btn = document.createElement('button');
+                btn.className = `grid-btn ${isAnswered ? 'answered' : ''} ${isCurrent ? 'current' : ''}`;
+                btn.innerText = idx + 1;
+                btn.title = q.section;
+                btn.onclick = () => goToQuestion(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function updateSectionStats() {
+            const answered = Object.keys(answers).length;
+            const currentSection = getCurrentSection();
+            document.getElementById('sectionTitle').innerHTML = `📚 ${currentSection}`;
+            document.getElementById('sectionStats').innerHTML = `Answered: ${answered}/${shuffledQuestions.length} | Q${currentIndex + 1} of ${shuffledQuestions.length}`;
+
+            // 🔥 ADD THIS - Show "Last Question" indicator
+            let statsText = `Answered: ${answered}/${shuffledQuestions.length} | Q${currentIndex + 1} of ${shuffledQuestions.length}`;
+            if (currentIndex === shuffledQuestions.length - 1) {
+                statsText += ' 📌 Last Question';
+            }
+            document.getElementById('sectionStats').innerHTML = statsText;
+        }
+
+
+        function selectAnswer(qIndex, ansIdx) {
+            answers[qIndex] = ansIdx;
+            renderCurrentQuestion();
+            renderQuestionGrid();
+            updateSectionStats();
+            saveProgress();
+            logActivity(`Answered question ${qIndex + 1}`);
+        }
+
+        window.selectAnswer = selectAnswer;
+
+        function clearResponse() {
+            delete answers[currentIndex];
+            renderCurrentQuestion();
+            renderQuestionGrid();
+            updateSectionStats();
+            saveProgress();
+            logActivity(`Cleared answer for question ${currentIndex + 1}`);
+        }
+
+        function nextQuestion() {
+            if (currentIndex < shuffledQuestions.length - 1) {
+                currentIndex++;
+                renderCurrentQuestion();
+                renderQuestionGrid();
+                updateSectionStats();
+                logActivity(`Moved to question ${currentIndex + 1}`);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderCurrentQuestion();
+                renderQuestionGrid();
+                updateSectionStats();
+                logActivity(`Moved to question ${currentIndex + 1}`);
+            }
+        }
+
+        function goToQuestion(index) {
+            currentIndex = index;
+            renderCurrentQuestion();
+            renderQuestionGrid();
+            updateSectionStats();
+            logActivity(`Jumped to question ${index + 1}`);
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    logActivity("Test auto-submitted due to timeout");
+                    submitQuiz();
+                } else {
+                    timeRemaining--;
+                    const hours = Math.floor(timeRemaining / 3600);
+                    const minutes = Math.floor((timeRemaining % 3600) / 60);
+                    const secs = timeRemaining % 60;
+                    const timerEl = document.getElementById('timer');
+                    timerEl.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    if (timeRemaining <= 300) timerEl.classList.add('warning');
+                    saveProgress();
+                }
+            }, 1000);
+        }
+
+        function saveProgress() {
+            const progress = {
+                currentIndex,
+                answers,
+                timeRemaining,
+                shuffledQuestions: shuffledQuestions,
+            };
+            localStorage.setItem('quiz_progress', JSON.stringify(progress));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem('quiz_progress');
+            if (saved) {
+                try {
+                    const p = JSON.parse(saved);
+                    if (p.shuffledQuestions && p.shuffledQuestions.length === questions.length) {
+                        shuffledQuestions = p.shuffledQuestions;
+                        currentIndex = p.currentIndex;
+                        answers = p.answers || {};
+                        timeRemaining = p.timeRemaining;
+                        // IMPORTANT: ALWAYS reset violation counters to 0
+                        tabSwitchCount = 0;
+                        fullScreenExitCount = 0;
+                        activityLog = [];
+                    } else {
+                        shuffledQuestions = shuffleArray(questions);
+                    }
+                } catch (e) {
+                    shuffledQuestions = shuffleArray(questions);
+                }
+            } else {
+                shuffledQuestions = shuffleArray(questions);
+            }
+        }
+
+
+        async function submitQuiz() {
+            if (timerInterval) clearInterval(timerInterval);
+            quizStarted = false;
+
+            let totalScore = 0;
+            let totalMarks = 0;
+            let correctCount = 0;
+            let sectionScores = {};
+            let questionResults = [];
+
+            shuffledQuestions.forEach((q, idx) => {
+                totalMarks += q.marks;
+                const isCorrect = answers[idx] === q.correct;
+                if (isCorrect) {
+                    totalScore += q.marks;
+                    correctCount++;
+                }
+
+                questionResults.push({
+                    id: q.id,
+                    index: idx,
+                    question: q.text,
+                    options: q.options,
+                    correct: q.correct,
+                    selected: answers[idx],
+                    isCorrect: isCorrect,
+                    section: q.section,
+                    marks: q.marks
+                });
+
+                if (!sectionScores[q.section]) {
+                    sectionScores[q.section] = { score: 0, total: 0 };
+                }
+                sectionScores[q.section].total += q.marks;
+                if (isCorrect) {
+                    sectionScores[q.section].score += q.marks;
+                }
+            });
+
+            questionResults.sort((a, b) => a.id - b.id);
+
+            const percentage = totalMarks > 0 ? (totalScore / totalMarks) * 100 : 0;
+
+            let grade = "F";
+            if (percentage >= 90) grade = "A+";
+            else if (percentage >= 80) grade = "A";
+            else if (percentage >= 70) grade = "B+";
+            else if (percentage >= 60) grade = "B";
+            else if (percentage >= 50) grade = "C";
+
+            let verdict = "";
+            if (percentage >= 80) verdict = "🎉 Excellent Performance! You're in Top 10%";
+            else if (percentage >= 65) verdict = "👍 Good Performance! You're in Top 25%";
+            else if (percentage >= 50) verdict = "📚 Average Performance. Need more practice";
+            else verdict = "💪 Keep Practicing! Review your weak areas";
+
+            document.getElementById('resultScore').innerHTML = `${totalScore}/${totalMarks}<br><small>${percentage.toFixed(1)}%</small>`;
+
+            const totalAnswered = Object.keys(answers).length;
+            const totalUnanswered = shuffledQuestions.length - totalAnswered;
+            const wrongCount = totalAnswered - correctCount;
+
+            // 🔥 Generate question-wise detailed results - Status BESIDE the question
+            let questionDetails = '<div style="margin-top:20px;"><h3>📝 Question-wise Review:</h3>';
+
+            questionResults.forEach((qr) => {
+                const statusIcon = qr.isCorrect ? '' : '';
+                const statusColor = qr.isCorrect ? '#10b981' : '#ef4444';
+                const statusText = qr.isCorrect ? 'Correct' : 'Incorrect';
+
+                const correctAnswerText = qr.options[qr.correct];
+                const selectedAnswerText = qr.selected !== undefined ? qr.options[qr.selected] : 'Not Answered';
+
+                questionDetails += `
+            <div style="margin:8px 0; padding:12px 16px; background:${qr.isCorrect ? '#f0fdf4' : '#fef2f2'}; border-radius:8px; border-left:4px solid ${statusColor};">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <strong style="color:#1e293b;">Q${qr.id}.</strong>
+                        <span style="color:#1e293b;">${qr.question}</span>
+                        <span style="font-size:12px; color:#667eea;">(${qr.marks} marks)</span>
+                    </div>
+                    <span style="font-weight:bold; color:${statusColor}; white-space:nowrap; font-size:14px;">${statusIcon} ${statusText}</span>
+                </div>
+                <div style="margin-top:8px; font-size:14px;">
+                    <div><span style="color:#64748b;">Your Answer:</span> <strong style="color:${qr.isCorrect ? '#10b981' : '#ef4444'};">${selectedAnswerText}</strong></div>
+                    ${!qr.isCorrect ? `<div><span style="color:#64748b;">Correct Answer:</span> <strong style="color:#10b981;">${correctAnswerText}</strong></div>` : ''}
+                </div>
+            </div>
+        `;
+            });
+            questionDetails += '</div>';
+
+            let sectionAnalysis = '<div style="margin-top:20px;"><h3>📊 Section-wise Analysis:</h3>';
+            for (const [section, data] of Object.entries(sectionScores)) {
+                const sectionPercent = (data.score / data.total) * 100;
+                sectionAnalysis += `
+            <div style="margin:10px 0; padding:10px; background:#f1f5f9; border-radius:8px;">
+                <strong>${section}</strong><br>
+                Score: ${data.score}/${data.total} (${sectionPercent.toFixed(1)}%)<br>
+                <div style="height:6px; background:#e2e8f0; border-radius:3px; margin-top:5px;">
+                    <div style="height:6px; background:#667eea; border-radius:3px; width:${sectionPercent}%;"></div>
+                </div>
+            </div>
+        `;
+            }
+            sectionAnalysis += '</div>';
+
+            document.getElementById('resultDetails').innerHTML = `
+        <div style="text-align:center; margin-bottom:20px;">
+            <strong style="font-size:18px;">${verdict}</strong>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px;">
+            <div style="text-align:center; padding:15px; background:#f1f5f9; border-radius:12px;">
+                <strong style="font-size:24px; color:#10b981;">${correctCount}</strong><br>Correct
+            </div>
+            <div style="text-align:center; padding:15px; background:#f1f5f9; border-radius:12px;">
+                <strong style="font-size:24px; color:#ef4444;">${wrongCount}</strong><br>Wrong
+            </div>
+            <div style="text-align:center; padding:15px; background:#f1f5f9; border-radius:12px;">
+                <strong style="font-size:24px; color:#f59e0b;">${totalUnanswered}</strong><br>Unanswered
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:15px; margin-top:15px;">
+            <div style="text-align:center; padding:15px; background:#f1f5f9; border-radius:12px;">
+                <strong style="font-size:24px; color:#667eea;">${percentage.toFixed(1)}%</strong><br>Accuracy
+            </div>
+            <div style="text-align:center; padding:15px; background:#f1f5f9; border-radius:12px;">
+                <strong style="font-size:24px; color:${percentage >= 60 ? '#10b981' : '#ef4444'};">${percentage >= 60 ? '✅ Pass' : '❌ Fail'}</strong><br>Status
+            </div>
+        </div>
+        ${sectionAnalysis}
+        ${questionDetails}
+        <div style="margin-top:15px; padding:10px; background:#fee2e2; border-radius:8px; text-align:center;">
+            <small>⚠️ Tab switches detected: ${tabSwitchCount} | Full-screen exits: ${fullScreenExitCount}</small>
+        </div>
+    `;
+
+            const resultData = {
+                quiz_id: "learnsphere_quiz_001",
+                quiz_name: "LearnSphere Assessment",
+                score: totalScore,
+                total_marks: totalMarks,
+                percentage: percentage,
+                grade: grade,
+                correct_answers: correctCount,
+                total_questions: shuffledQuestions.length,
+                time_taken: 3600 - timeRemaining,
+                tab_switches: tabSwitchCount,
+                fullscreen_exits: fullScreenExitCount,
+                section_scores: sectionScores,
+                answers: answers,
+                submitted_at: new Date().toISOString()
+            };
+
+            saveResultsToBackend(resultData);
+
+            document.getElementById('resultModal').classList.add('active');
+            localStorage.removeItem('quiz_progress');
+
+            if (document.fullscreenElement) {
+                exitFullScreen();
+            }
+
+            logActivity(`Test submitted - Score: ${totalScore}/${totalMarks} (${percentage.toFixed(1)}%)`);
+        }
+        function closeResult() {
+            document.getElementById('resultModal').classList.remove('active');
+            // Try to close this tab and go back to student portal
+            if (window.opener) {
+                window.opener.focus();
+                window.close();
+            } else {
+                window.location.href = 'student.html';
+            }
+        }
+        function retakeQuiz() {
+            document.getElementById('resultModal').classList.remove('active');
+
+            // Reset everything
+            const overlay = document.getElementById('fullscreen-overlay');
+            overlay.classList.remove('hidden');
+            quizStarted = false;
+
+            shuffledQuestions = shuffleArray(questions);
+            answers = {};
+            currentIndex = 0;
+            timeRemaining = 900;
+            tabSwitchCount = 0;
+            fullScreenExitCount = 0;
+            activityLog = [];
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            renderCurrentQuestion();
+            renderQuestionGrid();
+            updateSectionStats();
+            saveProgress();
+        }
+
+        // Event Listeners
+        document.getElementById('enter-fullscreen-btn')?.addEventListener('click', () => {
+            requestFullScreen();
+            setTimeout(() => {
+                if (isFullScreen()) {
+                    startQuiz();
+                } else {
+                    alert("Please click 'Allow' to enable full-screen mode for the test.");
+                }
+            }, 500);
+        });
+
+        document.getElementById('clearResponseBtn')?.addEventListener('click', clearResponse);
+        document.getElementById('nextBtn')?.addEventListener('click', nextQuestion);
+        document.getElementById('prevBtn')?.addEventListener('click', prevQuestion);
+        document.getElementById('submitBtn')?.addEventListener('click', () => {
+            if (confirm(`Are you sure you want to submit your quiz?\n\nTab switches: ${tabSwitchCount}\nFull-screen exits: ${fullScreenExitCount}\nQuestions answered: ${Object.keys(answers).length}/${shuffledQuestions.length}`)) {
+                submitQuiz();
+            }
+        });
+        document.getElementById('closeResultBtn')?.addEventListener('click', closeResult);
+        document.getElementById('retakeBtn')?.addEventListener('click', retakeQuiz);
+
+        function saveResultsToBackend(resultData) {
+            const token = sessionStorage.getItem('studentToken') || localStorage.getItem('studentToken');
+
+            if (!token) {
+                console.log("No auth token found, results saved only locally");
+                alert("⚠️ Results saved locally only. Please login to save results to cloud.");
+                return;
+            }
+
+            // Format answers for backend (convert to object with string keys)
+            const formattedAnswers = {};
+            for (const [key, value] of Object.entries(resultData.answers)) {
+                formattedAnswers[key] = value;
+            }
+
+            fetch('/quiz/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                },
+                body: JSON.stringify({
+                    quiz_id: "learnsphere_quiz_001",
+                    answers: formattedAnswers,
+                    score: resultData.score,
+                    total: resultData.total_marks,
+                    percentage: resultData.percentage,
+                    grade: resultData.grade
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server response:", data);
+                    if (data.message) {
+                        alert(`✅ Quiz submitted! Score: ${data.score}/${data.total} (${data.percentage}%) - ${data.grade}`);
+                    } else {
+                        console.log("Failed to save results:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error saving results:", error);
+                    alert("⚠️ Could not connect to server. Results saved locally only.");
+                });
+        }
+    </script>
+    <!-- Tab Switch Warning -->
+    <div id="tabWarning" class="tab-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>⚠️ Warning: Tab switch detected! This will be logged.</span>
+    </div>
+</body>
+
+</html>

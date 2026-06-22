@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal | Management Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -44,11 +46,6 @@
         .login-header h1 {
             font-size: 2rem;
             color: #1e293b;
-        }
-
-        .dashboard-container {
-            min-height: 100vh;
-            background: #0f172a;
         }
 
         .navbar {
@@ -141,6 +138,10 @@
             font-weight: 600;
         }
 
+        .data-table tr:hover {
+            background: rgba(56, 189, 248, 0.1);
+        }
+
         .table-responsive {
             overflow-x: auto;
         }
@@ -183,6 +184,24 @@
             background: #dc2626;
         }
 
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
         .form-group {
             margin-bottom: 1rem;
         }
@@ -194,7 +213,8 @@
             font-size: 0.85rem;
         }
 
-        .form-group input {
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 0.75rem;
             background: #0f172a;
@@ -203,7 +223,8 @@
             color: #f1f5f9;
         }
 
-        .form-group input:focus {
+        .form-group input:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #38bdf8;
         }
@@ -230,16 +251,166 @@
             color: #fca5a5;
         }
 
+        hr {
+            border-color: #334155;
+            margin: 1rem 0;
+        }
+
         @media (max-width: 768px) {
             .dashboard-content {
                 padding: 0 1rem;
             }
+
             .row-2col {
                 grid-template-columns: 1fr;
             }
         }
+
+        .notice-item.high-priority {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .notice-item.urgent-priority {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        input[type="date"] {
+            color-scheme: dark;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background-color: #38bdf8;
+            border-radius: 4px;
+            padding: 4px;
+            cursor: pointer;
+        }
+
+        .materials-scroll-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 15px;
+            scroll-behavior: smooth;
+        }
+
+        .materials-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .materials-scroll-container::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 10px;
+        }
+
+        .materials-scroll-container::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 10px;
+        }
+
+        .materials-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #0ea5e9;
+        }
+
+        .material-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-wrapper {
+            width: 100%;
+            margin: 4px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+
+        .progress-fill.green {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .progress-fill.orange {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .progress-fill.red {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .text-paid {
+            color: #10b981;
+        }
+
+        .text-partial {
+            color: #f59e0b;
+        }
+
+        .text-unpaid {
+            color: #ef4444;
+        }
+
+        .text-overdue {
+            color: #dc2626;
+        }
+
+        .fee-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .fee-stat-card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .fee-stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .fee-stat-card .label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .status-paid {
+            color: #10b981;
+        }
+
+        .status-unpaid {
+            color: #ef4444;
+        }
     </style>
 </head>
+
 <body>
     <!-- Login Section -->
     <div id="loginSection" class="login-container">
@@ -251,9 +422,12 @@
             </div>
             <div id="loginMsg" class="alert" style="display:none;"></div>
             <form id="loginForm">
-                <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="admin@portal.com" required></div>
-                <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Enter password" required></div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-sign-in-alt"></i> Login</button>
+                <div class="form-group"><label>Email</label><input type="email" id="email"
+                        placeholder="admin@portal.com" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="password"
+                        placeholder="Enter password" required></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-sign-in-alt"></i>
+                    Login</button>
             </form>
             <hr style="margin: 1.5rem 0;">
             <div style="text-align: center;">
@@ -273,15 +447,21 @@
             <div id="registerMsg" class="alert" style="display:none;"></div>
             <form id="registerForm">
                 <div class="row-2col">
-                    <div class="form-group"><label>Admin ID</label><input type="number" id="regAdminId" placeholder="e.g., 5001" required></div>
-                    <div class="form-group"><label>Full Name</label><input type="text" id="regName" placeholder="Alex Morgan" required></div>
+                    <div class="form-group"><label>Admin ID</label><input type="number" id="regAdminId"
+                            placeholder="e.g., 5001" required></div>
+                    <div class="form-group"><label>Full Name</label><input type="text" id="regName"
+                            placeholder="Alex Morgan" required></div>
                 </div>
-                <div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="admin@college.edu" required></div>
-                <div class="form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Strong password" required></div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-check-circle"></i> Register</button>
+                <div class="form-group"><label>Email</label><input type="email" id="regEmail"
+                        placeholder="admin@college.edu" required></div>
+                <div class="form-group"><label>Password</label><input type="password" id="regPassword"
+                        placeholder="Strong password" required></div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-check-circle"></i>
+                    Register</button>
             </form>
             <hr style="margin: 1.5rem 0;">
-            <div style="text-align: center;"><a href="#" id="showLoginBtn" style="color: #38bdf8;">Back to Login</a></div>
+            <div style="text-align: center;"><a href="#" id="showLoginBtn" style="color: #38bdf8;">Back to Login</a>
+            </div>
         </div>
     </div>
 
@@ -297,13 +477,26 @@
             </div>
         </div>
         <div class="dashboard-content">
+            <!-- Stats Cards -->
             <div class="stats-grid">
-                <div class="stat-card"><h3 id="totalStudents">0</h3><p>Total Students</p></div>
-                <div class="stat-card"><h3 id="totalCourses">0</h3><p>Active Courses</p></div>
-                <div class="stat-card"><h3 id="totalAdmins">0</h3><p>Total Admins</p></div>
+                <div class="stat-card">
+                    <h3 id="totalStudents">0</h3>
+                    <p>Total Students</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalCourses">0</h3>
+                    <p>Active Courses</p>
+                </div>
+                <div class="stat-card">
+                    <h3 id="totalAdmins">0</h3>
+                    <p>Total Admins</p>
+                </div>
             </div>
+
+            <!-- Student Management -->
             <div class="card">
-                <div class="flex-between" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div class="flex-between"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3><i class="fas fa-users"></i> Student Management</h3>
                     <button id="refreshBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh</button>
                 </div>
@@ -311,26 +504,425 @@
                     <p>Loading students...</p>
                 </div>
             </div>
+
+            <!-- Subject Management -->
             <div class="card">
-                <h3><i class="fas fa-edit"></i> Update Profile</h3>
-                <div id="updateMsg" class="alert" style="display:none;"></div>
-                <form id="updateForm">
+                <h3><i class="fas fa-book"></i> Subject Management</h3>
+                <div id="subjectMsg" class="alert" style="display:none;"></div>
+                <form id="addSubjectForm">
                     <div class="row-2col">
-                        <div class="form-group"><label>Full Name</label><input type="text" id="updateName"></div>
-                        <div class="form-group"><label>Email</label><input type="email" id="updateEmail"></div>
+                        <div class="form-group"><label>Subject ID</label><input type="text" id="subjectId"
+                                placeholder="e.g., CS101" required></div>
+                        <div class="form-group"><label>Subject Name</label><input type="text" id="subjectName"
+                                placeholder="e.g., Python Programming" required></div>
                     </div>
-                    <div class="form-group"><label>New Password (optional)</label><input type="password" id="updatePassword" placeholder="Leave blank to keep unchanged"></div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Profile</button>
+                    <div class="form-group"><label>Course</label><input type="text" id="subjectCourse"
+                            placeholder="e.g., Computer Science"></div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Subject</button>
                 </form>
+                <hr>
+                <button id="refreshSubjectsBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh
+                    Subjects</button>
+                <div id="subjectsList" class="table-responsive" style="margin-top: 1rem;">
+                    <p style="color:#94a3b8;">No subjects added yet.</p>
+                </div>
+            </div>
+
+            <!-- Attendance Management -->
+            <div class="card">
+                <h3><i class="fas fa-calendar-check"></i> Attendance Management</h3>
+                <div id="attendanceMsg" class="alert" style="display:none;"></div>
+                <form id="markAttendanceForm">
+                    <div class="row-2col">
+                        <div class="row-2col">
+                            <div class="form-group">
+                                <label>Student ID</label>
+                                <input type="number" id="attStudentId" placeholder="Enter Student ID" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="date" id="attDate" required style="flex: 1;">
+                                    <button type="button" id="setTodayBtn" class="btn-outline btn"
+                                        style="padding: 0.75rem;"><i class="fas fa-calendar-day"></i> Today</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="attStatus">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                            <option value="Late">Late</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Mark Attendance</button>
+                </form>
+                <hr>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <button id="refreshAttendanceBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh
+                        Records</button>
+                    <button id="clearAttendanceBtn" class="btn-warning btn" style="background:#ef4444;"><i
+                            class="fas fa-trash-alt"></i> Clear All</button>
+                </div>
+                <div id="attendanceRecords" class="table-responsive" style="margin-top: 1rem;">
+                    <p style="color:#94a3b8;">Click refresh to view attendance records.</p>
+                </div>
+            </div>
+
+            <!-- Marks Management -->
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Marks Management</h3>
+                <div id="marksMsg" class="alert" style="display:none;"></div>
+                <form id="addMarksForm">
+                    <div class="row-2col">
+                        <div class="form-group"><label>Student ID</label><input type="number" id="marksStudentId"
+                                placeholder="Student ID" required></div>
+                        <div class="form-group"><label>Subject ID</label><input type="text" id="marksSubjectId"
+                                placeholder="e.g., CS101" required></div>
+                    </div>
+                    <div class="row-2col">
+                        <div class="form-group"><label>Marks Obtained</label><input type="number" id="marksObtained"
+                                placeholder="e.g., 85" required></div>
+                        <div class="form-group"><label>Total Marks</label><input type="number" id="totalMarks"
+                                placeholder="100" value="100"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Exam Type</label>
+                        <select id="examType">
+                            <option value="Internal">Internal</option>
+                            <option value="Mid-term">Mid-term</option>
+                            <option value="Final">Final</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Add/Update Marks</button>
+                </form>
+                <hr>
+                <button id="refreshMarksBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> View All
+                    Marks</button>
+                <div id="marksRecords" class="table-responsive" style="margin-top: 1rem;">
+                    <p style="color:#94a3b8;">Click refresh to view marks records.</p>
+                </div>
+            </div>
+
+            <!-- Course Materials Management -->
+            <div class="card">
+                <h3><i class="fas fa-book"></i> Course Materials Management</h3>
+                <div id="materialMsg" class="alert" style="display:none;"></div>
+
+                <form id="addMaterialForm" enctype="multipart/form-data">
+                    <div class="row-2col">
+                        <div class="form-group">
+                            <label>Title *</label>
+                            <input type="text" id="materialTitle" placeholder="e.g., Python Programming Notes" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject *</label>
+                            <select id="materialSubject" required>
+                                <option value="Programming">Programming</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Science">Science</option>
+                                <option value="English">English</option>
+                                <option value="General">General</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="materialDescription" rows="2"
+                            style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"
+                            placeholder="Brief description of the material..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>PDF File *</label>
+                        <input type="file" id="materialFile" accept=".pdf" required
+                            style="background:#0f172a; color:#f1f5f9; border:1px solid #334155; border-radius:0.5rem; padding:0.5rem;">
+                        <small style="color:#94a3b8;">Maximum file size: 10MB. Only PDF files allowed.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Upload Material</button>
+                </form>
+
+                <hr>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <button id="refreshMaterialsBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh
+                        Materials</button>
+                </div>
+                <div id="materialsList" class="table-responsive" style="margin-top: 1rem;">
+                    <p style="color:#94a3b8;">Loading materials...</p>
+                </div>
+            </div>
+
+            <!-- Announcement Management Card-->
+            <div class="card">
+                <h3><i class="fas fa-bullhorn"></i> Announcement Management</h3>
+                <div id="announcementMsg" class="alert" style="display:none;"></div>
+                <form id="addAnnouncementForm">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="announcementTitle" placeholder="e.g., Exam Schedule Released" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <textarea id="announcementContent" rows="4"
+                            style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"
+                            placeholder="Enter detailed announcement..." required></textarea>
+                    </div>
+                    <div class="row-2col">
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select id="announcementPriority">
+                                <option value="normal">Normal</option>
+                                <option value="high">High Priority</option>
+                                <option value="urgent">Urgent</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Expiry Date (Optional)</label>
+                            <input type="date" id="announcementExpiry">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Post
+                        Announcement</button>
+                </form>
+                <hr>
+                <button id="refreshAnnouncementsBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh
+                    Announcements</button>
+                <div id="announcementsList" class="table-responsive" style="margin-top: 1rem;">
+                    <p style="color:#94a3b8;">No announcements yet.</p>
+                </div>
+            </div>
+
+            <!-- ============ VIDEO MANAGEMENT ============ -->
+            <div class="card">
+                <h3><i class="fas fa-video"></i> Video Management</h3>
+                <div id="videoMsg" class="alert" style="display:none;"></div>
+
+                <div
+                    style="background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155;">
+                    <h4 style="color: #f1f5f9; margin-bottom: 15px;">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload New Video
+                    </h4>
+                    <form id="videoUploadForm">
+                        <div class="row-2col">
+                            <div class="form-group">
+                                <label style="color: #94a3b8;">Video Title *</label>
+                                <input type="text" id="videoTitle" placeholder="e.g., Introduction to Python" required>
+                            </div>
+                            <div class="form-group">
+                                <label style="color: #94a3b8;">Subject *</label>
+                                <select id="videoSubject" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="Programming">💻 Programming</option>
+                                    <option value="Mathematics">📐 Mathematics</option>
+                                    <option value="Science">🔬 Science</option>
+                                    <option value="English">📖 English</option>
+                                    <option value="General">📚 General</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: #94a3b8;">Video URL *</label>
+                            <input type="url" id="videoUrl" placeholder="https://www.youtube.com/watch?v=..." required>
+                            <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">
+                                <i class="fas fa-info-circle"></i> Supports YouTube, Vimeo, and direct video links
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: #94a3b8;">Description</label>
+                            <textarea id="videoDescription" rows="3"
+                                style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"
+                                placeholder="Describe what students will learn..."></textarea>
+                        </div>
+                        <div class="row-2col">
+                            <div class="form-group">
+                                <label style="color: #94a3b8;">Duration</label>
+                                <input type="text" id="videoDuration" placeholder="Auto-detected from YouTube" readonly
+                                    style="background:#0f172a; color:#94a3b8; border:1px solid #334155; border-radius:0.5rem; padding:0.75rem; width:100%; cursor:not-allowed;">
+                                <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
+                                    <i class="fas fa-info-circle"></i> Duration will be auto-detected from YouTube
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label style="color: #94a3b8;">Thumbnail URL (auto-detected)</label>
+                                <input type="url" id="videoThumbnail" placeholder="Auto-detected from YouTube" readonly
+                                    style="background:#0f172a; color:#94a3b8; border:1px solid #334155; border-radius:0.5rem; padding:0.75rem; width:100%; cursor:not-allowed;">
+                                <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
+                                    <i class="fas fa-info-circle"></i> Thumbnail will be auto-detected from YouTube
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Upload
+                            Video</button>
+                    </form>
+                </div>
+
+                <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="fixDurationsBtn" class="btn btn-warning"
+                        style="padding: 8px 16px; background: #f59e0b; color: #0f172a;">
+                        <i class="fas fa-sync-alt"></i> Fix Missing Durations
+                    </button>
+                    <button id="refreshVideosBtn" class="btn btn-primary" style="padding: 8px 16px;">
+                        <i class="fas fa-sync-alt"></i> Refresh Videos
+                    </button>
+                </div>
+
+                <div id="adminVideoList" style="margin-top: 20px;">
+                    <p style="color:#94a3b8;">Loading videos...</p>
+                </div>
+            </div>
+
+            <!-- Edit Video Modal -->
+            <div id="editVideoModal" class="modal"
+                style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
+                <div
+                    style="background:#1e293b; border-radius:1rem; padding:2rem; max-width:600px; width:95%; max-height:90vh; overflow-y:auto;">
+                    <h3 style="color: #f1f5f9; margin-bottom: 1rem;">
+                        <i class="fas fa-edit"></i> Edit Video
+                    </h3>
+                    <form id="editVideoForm">
+                        <input type="hidden" id="editVideoId">
+                        <div class="form-group">
+                            <label style="color: #94a3b8;">Title *</label>
+                            <input type="text" id="editVideoTitle"
+                                style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: #94a3b8;">Subject *</label>
+                            <select id="editVideoSubject"
+                                style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"
+                                required>
+                                <option value="Programming">Programming</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Science">Science</option>
+                                <option value="English">English</option>
+                                <option value="General">General</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="color: #94a3b8;">Video URL</label>
+                            <input type="url" id="editVideoUrl"
+                                style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;">
+                        </div>
+                        <div class="form-group">
+                            <label style="color: #94a3b8;">Description</label>
+                            <textarea id="editVideoDescription" rows="3"
+                                style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"></textarea>
+                        </div>
+                        <div class="row-2col">
+                            <div class="form-group">
+                                <label style="color: #94a3b8;">Duration</label>
+                                <input type="text" id="editVideoDuration"
+                                    style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;">
+                            </div>
+                            <div class="form-group">
+                                <label style="color: #94a3b8;">Thumbnail URL</label>
+                                <input type="url" id="editVideoThumbnail"
+                                    style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;">
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:1rem; justify-content:flex-end; margin-top:1rem;">
+                            <button type="button" id="closeEditVideoModal" class="btn btn-outline">Cancel</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ============ FEE MANAGEMENT ============ -->
+            <div class="card">
+                <h3><i class="fas fa-wallet"></i> Fee Management</h3>
+                <div id="feeMsg" class="alert" style="display:none;"></div>
+
+                <!-- Send Fee Payment Notice -->
+<div style="background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #334155;">
+    <h4 style="color: #f1f5f9; margin-bottom: 15px;">
+        <i class="fas fa-bullhorn"></i> Send Fee Payment Notice
+    </h4>
+    <div class="row-2col">
+        <div class="form-group">
+            <label style="color: #94a3b8;">Select Semester *</label>
+            <select id="feeNoticeSemester" required>
+                <option value="">Select Semester</option>
+                <option value="Semester 1">Semester 1</option>
+                <option value="Semester 2">Semester 2</option>
+                <option value="Semester 3">Semester 3</option>
+                <option value="Semester 4">Semester 4</option>
+                <option value="Semester 5">Semester 5</option>
+                <option value="Semester 6">Semester 6</option>
+                <option value="Semester 7">Semester 7</option>
+                <option value="Semester 8">Semester 8</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label style="color: #94a3b8;">Due Date</label>
+            <input type="date" id="feeNoticeDueDate">
+        </div>
+    </div>
+    <div class="form-group">
+        <label style="color: #94a3b8;">Notice Title *</label>
+        <input type="text" id="feeNoticeTitle" placeholder="e.g., Semester 5 Fee Payment Due" required>
+    </div>
+    <div class="form-group">
+        <label style="color: #94a3b8;">Notice Message *</label>
+        <textarea id="feeNoticeContent" rows="3"
+            style="width:100%; padding:0.75rem; background:#0f172a; border:1px solid #334155; border-radius:0.5rem; color:#f1f5f9;"
+            placeholder="Enter the fee payment notice for students..."></textarea>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button onclick="sendFeeNotice()" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Send Notice
+        </button>
+        <button onclick="clearFeeNoticeForm()" class="btn btn-outline">
+            <i class="fas fa-undo"></i> Clear
+        </button>
+    </div>
+    <div style="margin-top: 10px; color: #94a3b8; font-size: 12px;">
+        <i class="fas fa-info-circle"></i> This will send a fee payment notice to ONLY students in the selected semester.
+    </div>
+</div>
+            </div>
+
+            <!-- Fee Structure List -->
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button id="refreshFeeBtn" class="btn-outline btn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button id="exportFeeBtn" class="btn btn-success"><i class="fas fa-file-excel"></i> Export</button>
+            </div>
+            <div id="feeStructureList" class="table-responsive">
+                <p style="color:#94a3b8;">Loading fee structures...</p>
             </div>
         </div>
+
+        <!-- Update Profile -->
+        <div class="card">
+            <h3><i class="fas fa-edit"></i> Update Profile</h3>
+            <div id="updateMsg" class="alert" style="display:none;"></div>
+            <form id="updateForm">
+                <div class="row-2col">
+                    <div class="form-group"><label>Full Name</label><input type="text" id="updateName"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="updateEmail"></div>
+                </div>
+                <div class="form-group"><label>New Password (optional)</label><input type="password" id="updatePassword"
+                        placeholder="Leave blank to keep unchanged"></div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update Profile</button>
+            </form>
+        </div>
+    </div>
     </div>
 
     <script>
         const API_BASE = '';
         let authToken = localStorage.getItem("adminToken") || null;
         let currentUser = null;
+        let showAllMarks = false;
+        let currentMarksData = [];
+        let showAllAttendance = false;
+        let currentAttendanceData = [];
+        let feeData = [];
 
+        // ============ API REQUEST ============
         async function apiRequest(endpoint, method = "GET", body = null, needAuth = true) {
             const headers = { "Content-Type": "application/json" };
             if (needAuth && authToken) headers["token"] = authToken;
@@ -341,7 +933,8 @@
                 const data = await res.json();
                 return { status: res.status, data };
             } catch (error) {
-                return { status: 0, data: { message: "Server error" } };
+                console.error("API Error:", error);
+                return { status: 0, data: { message: "Server error - Make sure Flask is running" } };
             }
         }
 
@@ -355,12 +948,41 @@
             }
         }
 
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/[&<>]/g, function (m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function setDefaultDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            const dateInput = document.getElementById("attDate");
+            if (dateInput && !dateInput.value) {
+                dateInput.value = `${yyyy}-${mm}-${dd}`;
+            }
+        }
+
+        // ============ DASHBOARD FUNCTIONS ============
         function showDashboard() {
             document.getElementById("loginSection").style.display = "none";
             document.getElementById("registerSection").style.display = "none";
             document.getElementById("dashboardSection").style.display = "block";
             loadAdminData();
             loadStudentList();
+            loadSubjects();
+            loadAttendanceRecords(false);
+            loadMarksRecords(false);
+            setDefaultDate();
+            setTimeout(() => {
+                loadFeeStructures();
+            }, 1500);
         }
 
         function showLogin() {
@@ -378,14 +1000,23 @@
             }
         }
 
+        // ========== STUDENT MANAGEMENT ==========
         async function loadStudentList() {
             const res = await apiRequest("/students", "GET", null, true);
             if (res.status === 200 && Array.isArray(res.data)) {
                 document.getElementById("totalStudents").innerText = res.data.length;
-                const courses = new Set(res.data.map(s => s.course).filter(c => c));
-                document.getElementById("totalCourses").innerText = courses.size;
-                
-                let html = `<table class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Phone</th><th>Gender</th><th>Action</th></tr></thead><tbody>`;
+                document.getElementById("totalAdmins").innerText = "1";
+
+                const subjectsRes = await apiRequest("/subjects", "GET", null, true);
+                if (subjectsRes.status === 200 && Array.isArray(subjectsRes.data)) {
+                    const uniqueCourses = new Set(subjectsRes.data.map(s => s.course).filter(c => c));
+                    document.getElementById("totalCourses").innerText = uniqueCourses.size;
+                } else {
+                    const courses = new Set(res.data.map(s => s.course).filter(c => c));
+                    document.getElementById("totalCourses").innerText = courses.size;
+                }
+
+                let html = `<table class="data-table"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Course</th><th>Phone</th><th>Gender</th><th>Actions</th></tr></thead><tbody>`;
                 res.data.forEach(s => {
                     html += `<tr>
                         <td>${s.student_id}</td>
@@ -394,15 +1025,49 @@
                         <td>${s.course || '-'}</td>
                         <td>${s.phoneno || '-'}</td>
                         <td>${s.gender || '-'}</td>
-                        <td><button class="btn-danger btn" onclick="deleteStudent(${s.student_id})"><i class="fas fa-trash"></i> Delete</button></td>
+                        <td>
+                            <button class="btn-warning btn" style="margin-right:5px;" onclick="editStudent(${s.student_id}, '${s.name}', '${s.email}', '${s.course || ''}', '${s.phoneno || ''}', '${s.gender || ''}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-danger btn" onclick="deleteStudent(${s.student_id})"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
                     </tr>`;
                 });
                 html += `</tbody></table>`;
                 document.getElementById("studentTable").innerHTML = html;
+            } else {
+                document.getElementById("studentTable").innerHTML = '<p style="color:#94a3b8;">No students found.</p>';
             }
         }
 
-        window.deleteStudent = async function(studentId) {
+        window.editStudent = function (studentId, currentName, currentEmail, currentCourse, currentPhone, currentGender) {
+            const newName = prompt("Enter new name:", currentName);
+            if (!newName) return;
+            const newEmail = prompt("Enter new email:", currentEmail);
+            if (!newEmail) return;
+            const newCourse = prompt("Enter new course:", currentCourse);
+            const newPhone = prompt("Enter new phone:", currentPhone);
+            const newGender = prompt("Enter new gender (Male/Female/Other):", currentGender);
+
+            const payload = {
+                name: newName,
+                email: newEmail,
+                course: newCourse || "",
+                phoneno: newPhone || "",
+                gender: newGender || "Male",
+                password: "temp123"
+            };
+
+            apiRequest(`/student/update/${studentId}`, "PUT", payload, true)
+                .then(res => {
+                    if (res.status === 200) {
+                        showMessage("updateMsg", "Student updated successfully!", false);
+                        loadStudentList();
+                    } else {
+                        showMessage("updateMsg", res.data.message || "Update failed", true);
+                    }
+                });
+        };
+
+        window.deleteStudent = async function (studentId) {
             if (confirm("Delete this student? This cannot be undone!")) {
                 const res = await apiRequest(`/student/delete/${studentId}`, "DELETE", null, true);
                 if (res.status === 200) {
@@ -414,25 +1079,386 @@
             }
         };
 
-        // Login
-        document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
+        // ========== SUBJECT MANAGEMENT ==========
+        async function loadSubjects() {
+            const res = await apiRequest("/subjects", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                if (res.data.length === 0) {
+                    document.getElementById("subjectsList").innerHTML = '<p style="color:#94a3b8;">No subjects added yet.</p>';
+                    return;
+                }
+                let html = `<table class="data-table"><thead><tr><th>ID</th><th>Subject Name</th><th>Course</th><th>Actions</th></tr></thead><tbody>`;
+                res.data.forEach(s => {
+                    html += `<tr>
+                        <td>${s.subject_id}</td>
+                        <td>${s.subject_name}</td>
+                        <td>${s.course || '-'}</td>
+                        <td>
+                            <button class="btn-warning btn" style="margin-right:5px;" onclick="editSubject('${s.subject_id}', '${s.subject_name}', '${s.course || ''}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-danger btn" onclick="deleteSubject('${s.subject_id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                html += `</tbody></table>`;
+                document.getElementById("subjectsList").innerHTML = html;
+            } else {
+                document.getElementById("subjectsList").innerHTML = '<p style="color:#94a3b8;">No subjects added yet.</p>';
+            }
+        }
+
+        window.editSubject = function (subjectId, currentName, currentCourse) {
+            const newName = prompt("Enter new subject name:", currentName);
+            if (!newName) return;
+            const newCourse = prompt("Enter new course:", currentCourse);
+
+            const payload = {
+                subject_name: newName,
+                course: newCourse || ""
+            };
+
+            apiRequest(`/subject/update/${subjectId}`, "PUT", payload, true)
+                .then(res => {
+                    if (res.status === 200) {
+                        showMessage("subjectMsg", "Subject updated successfully!", false);
+                        loadSubjects();
+                    } else {
+                        showMessage("subjectMsg", res.data.message || "Update failed", true);
+                    }
+                });
+        };
+
+        window.deleteSubject = async function (subjectId) {
+            if (confirm("Delete this subject?")) {
+                const res = await apiRequest(`/subject/delete/${subjectId}`, "DELETE", null, true);
+                if (res.status === 200) {
+                    showMessage("subjectMsg", res.data.message, false);
+                    loadSubjects();
+                } else {
+                    showMessage("subjectMsg", res.data.message, true);
+                }
+            }
+        };
+
+        document.getElementById("addSubjectForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
+            const payload = {
+                subject_id: document.getElementById("subjectId").value,
+                subject_name: document.getElementById("subjectName").value,
+                course: document.getElementById("subjectCourse").value
+            };
+            const res = await apiRequest("/subject/add", "POST", payload, true);
+            if (res.status === 200) {
+                showMessage("subjectMsg", res.data.message, false);
+                document.getElementById("addSubjectForm").reset();
+                loadSubjects();
+            } else {
+                showMessage("subjectMsg", res.data.message || "Failed to add subject", true);
+            }
+        });
+
+        // ========== ATTENDANCE MANAGEMENT ==========
+        document.getElementById("markAttendanceForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const studentId = document.getElementById("attStudentId").value;
+            const attDate = document.getElementById("attDate").value;
+            const status = document.getElementById("attStatus").value;
+
+            if (!attDate) {
+                showMessage("attendanceMsg", "Please select a date", true);
+                return;
+            }
+
+            if (!studentId || studentId <= 0) {
+                showMessage("attendanceMsg", "Please enter a valid Student ID", true);
+                return;
+            }
+
+            const payload = {
+                student_id: parseInt(studentId),
+                date: attDate,
+                status: status
+            };
+
+            const res = await apiRequest("/attendance/mark", "POST", payload, true);
+            if (res.status === 200) {
+                showMessage("attendanceMsg", res.data.message, false);
+                document.getElementById("markAttendanceForm").reset();
+                setDefaultDate();
+                loadAttendanceRecords(false);
+            } else {
+                showMessage("attendanceMsg", res.data.message || "Failed to mark attendance", true);
+            }
+        });
+
+        document.getElementById("setTodayBtn")?.addEventListener("click", () => {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            document.getElementById("attDate").value = `${yyyy}-${mm}-${dd}`;
+        });
+
+        async function loadAttendanceRecords(viewAll = false) {
+            const res = await apiRequest("/attendance/all", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                currentAttendanceData = res.data;
+
+                if (res.data.length === 0) {
+                    document.getElementById("attendanceRecords").innerHTML = '<p style="color:#94a3b8;">No attendance records found.</p>';
+                    return;
+                }
+
+                let displayData = res.data;
+                let showingLimited = false;
+
+                if (!viewAll && res.data.length > 5) {
+                    displayData = res.data.slice(0, 5);
+                    showingLimited = true;
+                }
+
+                let html = `<table class="data-table"><thead><tr><th>Student ID</th><th>Student Name</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
+
+                displayData.forEach(a => {
+                    let displayDate = 'No date';
+                    if (a.date) {
+                        try {
+                            const dateObj = new Date(a.date);
+                            if (!isNaN(dateObj.getTime())) {
+                                displayDate = dateObj.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                });
+                            } else {
+                                displayDate = a.date;
+                            }
+                        } catch (e) {
+                            displayDate = a.date;
+                        }
+                    }
+
+                    html += `<tr>
+                        <td>${a.student_id}</td>
+                        <td>${a.student_name || 'Unknown'}</td>
+                        <td>${displayDate}</td>
+                        <td>${a.status}</td>
+                        <td>
+                            <button class="btn-warning btn" style="margin-right:5px; padding:4px 8px;" onclick="editAttendance('${a._id}', '${a.status}', '${a.date}')"><i class="fas fa-edit"></i> Edit</button>                    
+                            <button class="btn-danger btn" style="padding:4px 8px;" onclick="deleteAttendance('${a._id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    </tr>`;
+                });
+
+                html += `</tbody></table>`;
+
+                if (showingLimited) {
+                    html += `<div style="margin-top: 10px; text-align: center; color: #94a3b8; font-size: 14px;">
+                        <i class="fas fa-info-circle"></i> Showing first 5 records. 
+                        <button id="viewAllAttendanceBtn" class="btn-outline btn" style="margin-left: 10px;">
+                            <i class="fas fa-list"></i> View All ${res.data.length} Records
+                        </button>
+                    </div>`;
+                } else if (res.data.length > 5) {
+                    html += `<div style="margin-top: 10px; text-align: center; color: #94a3b8; font-size: 14px;">
+                        <i class="fas fa-check-circle"></i> Showing all ${res.data.length} records.
+                        <button id="showLessAttendanceBtn" class="btn-outline btn" style="margin-left: 10px;">
+                            <i class="fas fa-compress"></i> Show Less
+                        </button>
+                    </div>`;
+                }
+
+                document.getElementById("attendanceRecords").innerHTML = html;
+
+                const viewAllBtn = document.getElementById("viewAllAttendanceBtn");
+                if (viewAllBtn) {
+                    viewAllBtn.addEventListener("click", () => loadAttendanceRecords(true));
+                }
+
+                const showLessBtn = document.getElementById("showLessAttendanceBtn");
+                if (showLessBtn) {
+                    showLessBtn.addEventListener("click", () => loadAttendanceRecords(false));
+                }
+
+            } else {
+                document.getElementById("attendanceRecords").innerHTML = '<p style="color:#94a3b8;">No attendance records found.</p>';
+            }
+        }
+
+        window.editAttendance = function (attendanceId, currentStatus, currentDate) {
+            const newStatus = prompt("Enter new status (Present/Absent/Late):", currentStatus);
+            if (newStatus && newStatus !== currentStatus) {
+                apiRequest(`/attendance/update/${attendanceId}`, "PUT", { status: newStatus }, true)
+                    .then(res => {
+                        if (res.status === 200) {
+                            showMessage("attendanceMsg", "Attendance updated!", false);
+                            loadAttendanceRecords(false);
+                        } else {
+                            showMessage("attendanceMsg", res.data.message, true);
+                        }
+                    });
+            }
+        };
+
+        window.deleteAttendance = async function (attendanceId) {
+            if (confirm("Delete this attendance record?")) {
+                const res = await apiRequest(`/attendance/delete/${attendanceId}`, "DELETE", null, true);
+                if (res.status === 200) {
+                    showMessage("attendanceMsg", res.data.message, false);
+                    loadAttendanceRecords(false);
+                } else {
+                    showMessage("attendanceMsg", res.data.message, true);
+                }
+            }
+        };
+
+        // ========== MARKS MANAGEMENT ==========
+        document.getElementById("addMarksForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                student_id: parseInt(document.getElementById("marksStudentId").value),
+                subject_id: document.getElementById("marksSubjectId").value,
+                marks_obtained: parseInt(document.getElementById("marksObtained").value),
+                total_marks: parseInt(document.getElementById("totalMarks").value),
+                exam_type: document.getElementById("examType").value
+            };
+            const res = await apiRequest("/marks/add", "POST", payload, true);
+            if (res.status === 200) {
+                showMessage("marksMsg", res.data.message, false);
+                document.getElementById("addMarksForm").reset();
+                loadMarksRecords(false);
+
+            } else {
+                showMessage("marksMsg", res.data.message || "Failed to add marks", true);
+            }
+        });
+
+        async function loadMarksRecords(viewAll = false) {
+            const res = await apiRequest("/marks/all", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                currentMarksData = res.data;
+
+                if (res.data.length === 0) {
+                    document.getElementById("marksRecords").innerHTML = '<p style="color:#94a3b8;">No marks records found.</p>';
+                    return;
+                }
+
+                let displayData = res.data;
+                let showingLimited = false;
+
+                if (!viewAll && res.data.length > 5) {
+                    displayData = res.data.slice(0, 5);
+                    showingLimited = true;
+                }
+
+                let html = `<table class="data-table"><thead><tr><th>Student</th><th>Subject</th><th>Marks</th><th>Grade</th><th>Exam</th><th>Actions</th></tr></thead><tbody>`;
+                displayData.forEach(m => {
+                    html += `<tr>
+                        <td>${m.student_name || m.student_id}</td>
+                        <td>${m.subject_name}</td>
+                        <td>${m.marks_obtained}/${m.total_marks}</td>
+                        <td><strong>${m.grade}</strong></td>
+                        <td>${m.exam_type}</td>
+                        <td>
+                            <button class="btn-warning btn" style="margin-right:5px;" onclick="editMarks('${m._id}', ${m.marks_obtained}, ${m.total_marks}, '${m.exam_type}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-danger btn" onclick="deleteMarks('${m._id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    </tr>`;
+                });
+
+                html += `</tbody></table>`;
+
+                if (showingLimited) {
+                    html += `<div style="margin-top: 10px; text-align: center; color: #94a3b8; font-size: 14px;">
+                        <i class="fas fa-info-circle"></i> Showing first 5 records. 
+                        <button id="viewAllMarksBtn" class="btn-outline btn" style="margin-left: 10px;">
+                            <i class="fas fa-list"></i> View All ${res.data.length} Records
+                        </button>
+                    </div>`;
+                } else if (res.data.length > 5) {
+                    html += `<div style="margin-top: 10px; text-align: center; color: #94a3b8; font-size: 14px;">
+                        <i class="fas fa-check-circle"></i> Showing all ${res.data.length} records.
+                        <button id="showLessMarksBtn" class="btn-outline btn" style="margin-left: 10px;">
+                            <i class="fas fa-compress"></i> Show Less
+                        </button>
+                    </div>`;
+                }
+
+                document.getElementById("marksRecords").innerHTML = html;
+
+                const viewAllBtn = document.getElementById("viewAllMarksBtn");
+                if (viewAllBtn) {
+                    viewAllBtn.addEventListener("click", () => loadMarksRecords(true));
+                }
+
+                const showLessBtn = document.getElementById("showLessMarksBtn");
+                if (showLessBtn) {
+                    showLessBtn.addEventListener("click", () => loadMarksRecords(false));
+                }
+
+            } else {
+                document.getElementById("marksRecords").innerHTML = '<p style="color:#94a3b8;">No marks records found.</p>';
+            }
+        }
+
+        window.editMarks = function (marksId, currentMarks, currentTotal, currentExam) {
+            const newMarks = prompt("Enter new marks obtained:", currentMarks);
+            if (newMarks && parseInt(newMarks) !== currentMarks) {
+                const newTotal = prompt("Enter total marks:", currentTotal);
+                const newExam = prompt("Enter exam type (Internal/Mid-term/Final):", currentExam);
+                apiRequest(`/marks/update/${marksId}`, "PUT", {
+                    marks_obtained: parseInt(newMarks),
+                    total_marks: parseInt(newTotal),
+                    exam_type: newExam
+                }, true)
+                    .then(res => {
+                        if (res.status === 200) {
+                            showMessage("marksMsg", "Marks updated!", false);
+                            loadMarksRecords(false);
+                        } else {
+                            showMessage("marksMsg", res.data.message, true);
+                        }
+                    });
+            }
+        };
+
+        window.deleteMarks = async function (marksId) {
+            if (confirm("Delete this marks record?")) {
+                const res = await apiRequest(`/marks/delete/${marksId}`, "DELETE", null, true);
+                if (res.status === 200) {
+                    showMessage("marksMsg", res.data.message, false);
+                    loadMarksRecords(false);
+                } else {
+                    showMessage("marksMsg", res.data.message, true);
+                }
+            }
+        };
+
+        // ========== LOGIN ==========
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
             const res = await apiRequest("/admin/login", "POST", {
-                email: document.getElementById("email").value,
-                password: document.getElementById("password").value
+                email: email,
+                password: password
             }, false);
+
             if (res.status === 200) {
                 authToken = res.data.token;
                 currentUser = { user_id: res.data.admin_id, role: "admin", name: res.data.name };
                 localStorage.setItem("adminToken", authToken);
                 localStorage.setItem("adminUser", JSON.stringify(currentUser));
                 showDashboard();
+                showMessage("loginMsg", "Login successful!", false);
             } else {
-                showMessage("loginMsg", res.data.message, true);
+                showMessage("loginMsg", res.data.message || "Login failed", true);
             }
         });
 
-        // Register
         document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
             const payload = {
@@ -450,7 +1476,6 @@
             }
         });
 
-        // Update Profile
         document.getElementById("updateForm")?.addEventListener("submit", async (e) => {
             e.preventDefault();
             const payload = {
@@ -468,18 +1493,18 @@
             }
         });
 
-        // Navigation
         document.getElementById("showRegisterBtn")?.addEventListener("click", () => {
             document.getElementById("loginSection").style.display = "none";
             document.getElementById("registerSection").style.display = "flex";
         });
+
         document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
+
         document.getElementById("logoutBtn")?.addEventListener("click", () => {
             localStorage.removeItem("adminToken");
             localStorage.removeItem("adminUser");
             showLogin();
         });
-        document.getElementById("refreshBtn")?.addEventListener("click", loadStudentList);
 
         // Check saved session
         const savedToken = localStorage.getItem("adminToken");
@@ -489,6 +1514,841 @@
             currentUser = JSON.parse(savedUser);
             showDashboard();
         }
+
+        // ============ ANNOUNCEMENT MANAGEMENT ==========
+        async function loadAnnouncements() {
+            const res = await apiRequest("/announcements", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                if (res.data.length === 0) {
+                    document.getElementById("announcementsList").innerHTML = '<p style="color:#94a3b8;">No announcements yet. Create your first announcement above!</p>';
+                    return;
+                }
+                let html = `<table class="data-table"><thead><tr><th>Title</th><th>Content</th><th>Priority</th><th>Date</th><th>Expiry</th><th>Actions</th></tr></thead><tbody>`;
+                res.data.forEach(a => {
+                    const priorityColor = a.priority === 'urgent' ? '#ef4444' : (a.priority === 'high' ? '#f59e0b' : '#10b981');
+                    html += `<tr>
+                        <td><strong>${escapeHtml(a.title)}</strong></td>
+                        <td>${escapeHtml(a.content.substring(0, 80))}${a.content.length > 80 ? '...' : ''}</td>
+                        <td><span style="background:${priorityColor}; color:white; padding:2px 8px; border-radius:12px; font-size:11px;">${a.priority}</span></td>
+                        <td>${new Date(a.date).toLocaleDateString()}</td>
+                        <td>${a.expiry ? new Date(a.expiry).toLocaleDateString() : 'Never'}</td>
+                        <td>
+                            <button class="btn-warning btn" style="margin-right:5px; padding:4px 8px;" onclick="editAnnouncement('${a._id}', '${escapeHtml(a.title)}', '${escapeHtml(a.content)}', '${a.priority}', '${a.expiry || ''}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn-danger btn" style="padding:4px 8px;" onclick="deleteAnnouncement('${a._id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </td>
+                    </tr>`;
+                });
+                html += `</tbody></table>`;
+                document.getElementById("announcementsList").innerHTML = html;
+            } else {
+                document.getElementById("announcementsList").innerHTML = '<p style="color:#94a3b8;">No announcements yet.</p>';
+            }
+        }
+
+        document.getElementById("addAnnouncementForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const payload = {
+                title: document.getElementById("announcementTitle").value,
+                content: document.getElementById("announcementContent").value,
+                priority: document.getElementById("announcementPriority").value,
+                expiry: document.getElementById("announcementExpiry").value || null
+            };
+            const res = await apiRequest("/announcements/add", "POST", payload, true);
+            if (res.status === 200) {
+                showMessage("announcementMsg", "Announcement posted successfully!", false);
+                document.getElementById("addAnnouncementForm").reset();
+                loadAnnouncements();
+            } else {
+                showMessage("announcementMsg", res.data.message || "Failed to post announcement", true);
+            }
+        });
+
+        window.editAnnouncement = function (id, currentTitle, currentContent, currentPriority, currentExpiry) {
+            const newTitle = prompt("Enter new title:", currentTitle);
+            if (!newTitle) return;
+            const newContent = prompt("Enter new content:", currentContent);
+            if (!newContent) return;
+            const newPriority = prompt("Enter priority (normal/high/urgent):", currentPriority);
+            const newExpiry = prompt("Enter expiry date (YYYY-MM-DD) or leave empty:", currentExpiry);
+
+            const payload = {
+                title: newTitle,
+                content: newContent,
+                priority: newPriority || "normal",
+                expiry: newExpiry || null
+            };
+
+            apiRequest(`/announcements/update/${id}`, "PUT", payload, true)
+                .then(res => {
+                    if (res.status === 200) {
+                        showMessage("announcementMsg", "Announcement updated!", false);
+                        loadAnnouncements();
+                    } else {
+                        showMessage("announcementMsg", res.data.message || "Update failed", true);
+                    }
+                });
+        };
+
+        window.deleteAnnouncement = async function (id) {
+            if (confirm("Delete this announcement?")) {
+                const res = await apiRequest(`/announcements/delete/${id}`, "DELETE", null, true);
+                if (res.status === 200) {
+                    showMessage("announcementMsg", res.data.message, false);
+                    loadAnnouncements();
+                } else {
+                    showMessage("announcementMsg", res.data.message, true);
+                }
+            }
+        };
+
+        document.getElementById("refreshAnnouncementsBtn")?.addEventListener("click", loadAnnouncements);
+
+        // ============ SEND FEE ANNOUNCEMENT TO SPECIFIC SEMESTER ============
+        async function sendFeeAnnouncement() {
+            const semester = document.getElementById('feeAnnouncementSemester').value;
+            const title = document.getElementById('feeAnnouncementTitle').value.trim();
+            const content = document.getElementById('feeAnnouncementContent').value.trim();
+            const dueDate = document.getElementById('feeAnnouncementDueDate').value;
+
+            if (!semester) {
+                showMessage('feeMsg', 'Please select a semester', true);
+                return;
+            }
+
+            if (!title || !content) {
+                showMessage('feeMsg', 'Please enter both title and content', true);
+                return;
+            }
+
+            if (!confirm(`Send this announcement to ALL students in ${semester}?\n\nTitle: ${title}\n\nThis will also create fee reminders for these students.`)) {
+                return;
+            }
+
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Sending...';
+
+            try {
+                const res = await apiRequest('/api/fee/announcement', 'POST', {
+                    semester: semester,
+                    title: title,
+                    content: content,
+                    due_date: dueDate
+                }, true);
+
+                if (res.status === 200) {
+                    showMessage('feeMsg', `✅ ${res.data.message}`, false);
+                    document.getElementById('feeAnnouncementTitle').value = '';
+                    document.getElementById('feeAnnouncementContent').value = '';
+                    document.getElementById('feeAnnouncementSemester').value = '';
+                    document.getElementById('feeAnnouncementDueDate').value = '';
+                    // Refresh fee structures
+                    loadFeeStructures();
+                } else {
+                    showMessage('feeMsg', res.data.message || 'Failed to send announcement', true);
+                }
+            } catch (error) {
+                showMessage('feeMsg', 'Error sending announcement', true);
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+
+        // ============ COURSE MATERIALS ==========
+        async function loadMaterials() {
+            const res = await apiRequest("/materials", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                if (res.data.length === 0) {
+                    document.getElementById("materialsList").innerHTML = '<p style="color:#94a3b8;">No materials added yet. Use the form above to add.</p>';
+                    return;
+                }
+
+                let html = `<div style="overflow-x: auto; overflow-y: hidden; padding-bottom: 10px;">
+                    <div style="display: flex; flex-direction: row; gap: 20px; min-width: min-content;">`;
+
+                res.data.forEach(m => {
+                    let fileSize = m.file_size ? (m.file_size / 1024).toFixed(2) + ' KB' : 'Unknown';
+                    let fileIcon = '<i class="fas fa-file-pdf" style="font-size: 48px; color: #ef4444;"></i>';
+
+                    html += `
+                        <div style="min-width: 300px; max-width: 350px; flex: 0 0 auto; background: #0f172a; border-radius: 12px; border: 1px solid #334155; overflow: hidden;">
+                            <div style="background: linear-gradient(135deg, #1e293b, #0f172a); padding: 20px; text-align: center; border-bottom: 1px solid #334155;">
+                                ${fileIcon}
+                                <h4 style="color: #38bdf8; margin-top: 10px; margin-bottom: 0; font-size: 16px;">${escapeHtml(m.file_type || 'PDF').toUpperCase()}</h4>
+                            </div>
+                            <div style="padding: 15px;">
+                                <h3 style="color: #f1f5f9; font-size: 18px; margin-bottom: 10px; word-wrap: break-word;">${escapeHtml(m.title)}</h3>
+                                <p style="color: #94a3b8; font-size: 13px; margin-bottom: 12px; line-height: 1.4; word-wrap: break-word;">${escapeHtml(m.description || 'No description provided')}</p>
+                                <div style="margin-bottom: 12px;">
+                                    <span style="background: #667eea; padding: 4px 10px; border-radius: 12px; font-size: 11px; color: white; display: inline-block;">${escapeHtml(m.subject)}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 8px 0; border-top: 1px solid #334155; border-bottom: 1px solid #334155;">
+                                    <span style="color: #94a3b8; font-size: 12px;"><i class="fas fa-file"></i> ${escapeHtml(m.file_name || 'document.pdf')}</span>
+                                    <span style="color: #94a3b8; font-size: 12px;"><i class="fas fa-database"></i> ${fileSize}</span>
+                                    <span style="color: #38bdf8; font-size: 12px;"><i class="fas fa-download"></i> ${m.downloads || 0}</span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="${m.file_url}" target="_blank" style="flex: 1; background: #38bdf8; color: #0f172a; text-decoration: none; padding: 8px; border-radius: 6px; text-align: center; font-size: 13px; font-weight: 600; transition: all 0.3s;" 
+                                       onmouseover="this.style.background='#0ea5e9'" onmouseout="this.style.background='#38bdf8'">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                    <button onclick="editMaterial('${m._id}', '${escapeHtml(m.title)}', '${escapeHtml(m.description || '')}', '${escapeHtml(m.subject)}')" 
+                                            style="flex: 1; background: #f59e0b; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s;"
+                                            onmouseover="this.style.background='#d97706'" onmouseout="this.style.background='#f59e0b'">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button onclick="deleteMaterial('${m._id}')" 
+                                            style="flex: 1; background: #ef4444; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s;"
+                                            onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `</div></div>
+                    <div style="text-align: center; margin-top: 15px; color: #94a3b8; font-size: 12px;">
+                        <i class="fas fa-arrow-left"></i> Scroll horizontally to see more materials <i class="fas fa-arrow-right"></i>
+                    </div>`;
+
+                document.getElementById("materialsList").innerHTML = html;
+            } else {
+                document.getElementById("materialsList").innerHTML = '<p style="color:#94a3b8;">Failed to load materials.</p>';
+            }
+        }
+
+        document.getElementById("addMaterialForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById("materialFile");
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showMessage("materialMsg", "Please select a PDF file", true);
+                return;
+            }
+
+            if (file.type !== "application/pdf") {
+                showMessage("materialMsg", "Only PDF files are allowed", true);
+                return;
+            }
+
+            if (file.size > 10 * 1024 * 1024) {
+                showMessage("materialMsg", "File size must be less than 10MB", true);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("title", document.getElementById("materialTitle").value);
+            formData.append("description", document.getElementById("materialDescription").value);
+            formData.append("subject", document.getElementById("materialSubject").value);
+
+            try {
+                const response = await fetch(`${API_BASE}/materials/add`, {
+                    method: "POST",
+                    headers: { "token": authToken },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    showMessage("materialMsg", "Material uploaded successfully!", false);
+                    document.getElementById("addMaterialForm").reset();
+                    loadMaterials();
+                } else {
+                    showMessage("materialMsg", result.message || "Failed to upload material", true);
+                }
+            } catch (error) {
+                console.error("Upload error:", error);
+                showMessage("materialMsg", "Error uploading file", true);
+            }
+        });
+
+        window.editMaterial = function (id, title, description, subject) {
+            const newTitle = prompt("Enter new title:", title);
+            if (!newTitle) return;
+            const newDescription = prompt("Enter new description:", description);
+            const newSubject = prompt("Enter subject (Programming/Mathematics/Science/English/General):", subject);
+
+            const payload = {
+                title: newTitle,
+                description: newDescription || "",
+                subject: newSubject || subject
+            };
+
+            apiRequest(`/materials/update/${id}`, "PUT", payload, true)
+                .then(res => {
+                    if (res.status === 200) {
+                        showMessage("materialMsg", "Material updated!", false);
+                        loadMaterials();
+                    } else {
+                        showMessage("materialMsg", res.data.message || "Update failed", true);
+                    }
+                });
+        };
+
+        window.deleteMaterial = async function (id) {
+            if (confirm("Delete this material?")) {
+                const res = await apiRequest(`/materials/delete/${id}`, "DELETE", null, true);
+                if (res.status === 200) {
+                    showMessage("materialMsg", "Material deleted!", false);
+                    loadMaterials();
+                } else {
+                    showMessage("materialMsg", res.data.message, true);
+                }
+            }
+        };
+
+        document.getElementById("refreshMaterialsBtn")?.addEventListener("click", loadMaterials);
+
+        // ============ VIDEO MANAGEMENT ============
+        function formatDuration(duration) {
+            const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+            if (!match) return "N/A";
+            const hours = parseInt(match[1] || 0);
+            const minutes = parseInt(match[2] || 0);
+            const seconds = parseInt(match[3] || 0);
+            if (hours > 0) {
+                return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            } else {
+                return `${minutes}:${String(seconds).padStart(2, '0')}`;
+            }
+        }
+
+ // ============ FEE NOTICE FUNCTIONS ============
+
+// Send Fee Notice to specific semester
+async function sendFeeNotice() {
+    const semester = document.getElementById('feeNoticeSemester').value;
+    const title = document.getElementById('feeNoticeTitle').value.trim();
+    const content = document.getElementById('feeNoticeContent').value.trim();
+    const dueDate = document.getElementById('feeNoticeDueDate').value;
+
+    if (!semester) {
+        showMessage('feeMsg', 'Please select a semester', true);
+        return;
+    }
+    if (!title || !content) {
+        showMessage('feeMsg', 'Please enter both title and content', true);
+        return;
+    }
+
+    if (!confirm(`Send this fee notice to ALL students in ${semester}?\n\nTitle: ${title}`)) {
+        return;
+    }
+
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Sending...';
+
+    try {
+        const res = await apiRequest('/api/fee/announcement', 'POST', {
+            semester: semester,
+            title: title,
+            content: content,
+            due_date: dueDate
+        }, true);
+
+        if (res.status === 200) {
+            showMessage('feeMsg', `✅ ${res.data.message}`, false);
+            clearFeeNoticeForm();
+            loadFeeStructures();
+        } else {
+            showMessage('feeMsg', res.data.message || 'Failed to send notice', true);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('feeMsg', 'Error sending notice', true);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+}
+
+// Clear Fee Notice Form
+function clearFeeNoticeForm() {
+    document.getElementById('feeNoticeTitle').value = '';
+    document.getElementById('feeNoticeContent').value = '';
+    document.getElementById('feeNoticeSemester').value = '';
+    document.getElementById('feeNoticeDueDate').value = '';
+}
+
+// Send Fee Announcement to specific semester
+async function sendFeeAnnouncement() {
+    const semester = document.getElementById('feeAnnouncementSemester').value;
+    const title = document.getElementById('feeAnnouncementTitle').value.trim();
+    const content = document.getElementById('feeAnnouncementContent').value.trim();
+    const dueDate = document.getElementById('feeAnnouncementDueDate').value;
+
+    if (!semester) {
+        showMessage('feeMsg', 'Please select a semester', true);
+        return;
+    }
+    if (!title || !content) {
+        showMessage('feeMsg', 'Please enter both title and content', true);
+        return;
+    }
+
+    if (!confirm(`Send this announcement to ALL students in ${semester}?\n\nTitle: ${title}`)) {
+        return;
+    }
+
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Sending...';
+
+    try {
+        const res = await apiRequest('/api/fee/announcement', 'POST', {
+            semester: semester,
+            title: title,
+            content: content,
+            due_date: dueDate
+        }, true);
+
+        if (res.status === 200) {
+            showMessage('feeMsg', `✅ ${res.data.message}`, false);
+            clearFeeAnnouncementForm();
+            loadFeeStructures();
+        } else {
+            showMessage('feeMsg', res.data.message || 'Failed to send announcement', true);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('feeMsg', 'Error sending announcement', true);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+}
+
+// Clear Fee Announcement Form
+function clearFeeAnnouncementForm() {
+    document.getElementById('feeAnnouncementTitle').value = '';
+    document.getElementById('feeAnnouncementContent').value = '';
+    document.getElementById('feeAnnouncementSemester').value = '';
+    document.getElementById('feeAnnouncementDueDate').value = '';
+}
+
+        async function loadAdminVideos() {
+            const res = await apiRequest("/admin/videos", "GET", null, true);
+            if (res.status === 200 && Array.isArray(res.data)) {
+                const container = document.getElementById("adminVideoList");
+                if (res.data.length === 0) {
+                    container.innerHTML = '<p style="color:#94a3b8;">No videos uploaded yet. Use the form above to add.</p>';
+                    return;
+                }
+
+                let html = `<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">`;
+
+                res.data.forEach(video => {
+                    let thumbnail = video.thumbnail || '';
+                    if (!thumbnail) {
+                        const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#fee140', '#f6d365'];
+                        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                        const firstLetters = video.title.split(' ').slice(0, 2).map(word => word[0]).join('').toUpperCase();
+                        thumbnail = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='${encodeURIComponent(randomColor)}'/%3E%3Ctext x='200' y='130' text-anchor='middle' dy='.3em' fill='white' font-size='64' font-weight='bold' font-family='Arial, sans-serif'%3E${firstLetters}%3C/text%3E%3C/svg%3E`;
+                    }
+
+                    const subjectColors = {
+                        'Programming': '#667eea',
+                        'Mathematics': '#f59e0b',
+                        'Science': '#10b981',
+                        'English': '#ef4444',
+                        'General': '#8b5cf6'
+                    };
+                    const subjectColor = subjectColors[video.subject] || '#667eea';
+
+                    let durationDisplay = video.duration || 'N/A';
+                    if (durationDisplay === 'N/A' || durationDisplay === '' || durationDisplay === '0:00') {
+                        durationDisplay = '--:--';
+                    }
+
+                    html += `
+                        <div style="background: #0f172a; border-radius: 12px; overflow: hidden; border: 1px solid #334155; transition: all 0.3s;" 
+                             onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'" 
+                             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; background: #000;">
+                                <img src="${thumbnail}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" alt="${escapeHtml(video.title)}">
+                                <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.85); color: white; padding: 3px 10px; border-radius: 4px; font-size: 13px; font-weight: 600;">${durationDisplay}</span>
+                            </div>
+                            <div style="padding: 14px 16px 16px 16px;">
+                                <h4 style="color: #f1f5f9; font-size: 16px; font-weight: 600; margin: 0 0 4px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 44px;">${escapeHtml(video.title)}</h4>
+                                <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 10px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 38px;">${escapeHtml(video.description || 'No description')}</p>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <span style="background: ${subjectColor}; padding: 2px 12px; border-radius: 12px; font-size: 11px; color: white; font-weight: 500;">${escapeHtml(video.subject)}</span>
+                                    <span style="color: #94a3b8; font-size: 12px;"><i class="fas fa-eye"></i> ${video.views || 0}</span>
+                                </div>
+                                <div style="display: flex; gap: 8px; border-top: 1px solid #334155; padding-top: 12px;">
+                                    <button onclick="editVideo('${video._id}')" class="btn btn-warning" style="padding: 6px 12px; font-size: 12px; flex: 1;"><i class="fas fa-edit"></i> Edit</button>
+                                    <button onclick="deleteVideo('${video._id}')" class="btn btn-danger" style="padding: 6px 12px; font-size: 12px; flex: 1;"><i class="fas fa-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            } else {
+                document.getElementById("adminVideoList").innerHTML = '<p style="color:#94a3b8;">Failed to load videos.</p>';
+            }
+        }
+
+        document.getElementById("videoUploadForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById("videoTitle").value.trim();
+            const subject = document.getElementById("videoSubject").value;
+            const videoUrl = document.getElementById("videoUrl").value.trim();
+            const description = document.getElementById("videoDescription").value.trim();
+            const duration = document.getElementById("videoDuration").value.trim();
+            const thumbnail = document.getElementById("videoThumbnail").value.trim();
+
+            if (!title || !subject || !videoUrl) {
+                showMessage("videoMsg", "Please fill in all required fields", true);
+                return;
+            }
+
+            const res = await apiRequest("/video/add", "POST", {
+                title, subject, video_url: videoUrl, description, duration, thumbnail
+            }, true);
+
+            if (res.status === 200) {
+                showMessage("videoMsg", "✅ Video uploaded successfully!", false);
+                document.getElementById("videoUploadForm").reset();
+                loadAdminVideos();
+            } else {
+                showMessage("videoMsg", res.data.message || "Failed to upload video", true);
+            }
+        });
+
+        document.getElementById("videoUrl")?.addEventListener("input", async function () {
+            const url = this.value.trim();
+            if (!url) return;
+
+            const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=)([^&]+)/) ||
+                url.match(/(?:youtu\.be\/)([^?]+)/);
+
+            if (youtubeMatch) {
+                const videoId = youtubeMatch[1];
+                const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+                const thumbInput = document.getElementById("videoThumbnail");
+                if (thumbInput) {
+                    thumbInput.value = thumbnailUrl;
+                }
+
+                try {
+                    const durationApiUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8`;
+                    const durationResponse = await fetch(durationApiUrl);
+                    if (durationResponse.ok) {
+                        const durationData = await durationResponse.json();
+                        if (durationData.items && durationData.items.length > 0) {
+                            const durationIso = durationData.items[0].contentDetails.duration;
+                            const durationFormatted = formatDuration(durationIso);
+                            const durationInput = document.getElementById("videoDuration");
+                            if (durationInput) {
+                                durationInput.value = durationFormatted;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.log("Could not fetch duration:", error);
+                }
+            }
+        });
+
+        document.getElementById("fixDurationsBtn")?.addEventListener("click", async function () {
+            const res = await apiRequest("/admin/videos", "GET", null, true);
+            if (res.status !== 200 || !Array.isArray(res.data)) {
+                showMessage("videoMsg", "Failed to load videos", true);
+                return;
+            }
+
+            let fixedCount = 0;
+            for (const video of res.data) {
+                if (!video.duration || video.duration === 'N/A' || video.duration === '') {
+                    const youtubeMatch = video.video_url.match(/(?:youtube\.com\/watch\?v=)([^&]+)/) ||
+                        video.video_url.match(/(?:youtu\.be\/)([^?]+)/);
+                    if (youtubeMatch) {
+                        const videoId = youtubeMatch[1];
+                        try {
+                            const apiUrl = `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8`;
+                            const durationResponse = await fetch(apiUrl);
+                            if (durationResponse.ok) {
+                                const durationData = await durationResponse.json();
+                                if (durationData.items && durationData.items.length > 0) {
+                                    const durationIso = durationData.items[0].contentDetails.duration;
+                                    const durationFormatted = formatDuration(durationIso);
+                                    const updateRes = await apiRequest(`/admin/video/update/${video._id}`, "PUT", {
+                                        ...video,
+                                        duration: durationFormatted
+                                    }, true);
+                                    if (updateRes.status === 200) {
+                                        fixedCount++;
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            console.log(`Failed to fetch duration for video ${video._id}:`, e);
+                        }
+                    }
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+
+            showMessage("videoMsg", `✅ Fixed ${fixedCount} video duration(s)!`, false);
+            loadAdminVideos();
+        });
+
+        document.getElementById("refreshVideosBtn")?.addEventListener("click", loadAdminVideos);
+
+        async function editVideo(videoId) {
+            const res = await apiRequest(`/video/${videoId}`, "GET", null, true);
+            if (res.status === 200) {
+                const video = res.data;
+                document.getElementById("editVideoId").value = videoId;
+                document.getElementById("editVideoTitle").value = video.title;
+                document.getElementById("editVideoSubject").value = video.subject;
+                document.getElementById("editVideoUrl").value = video.video_url;
+                document.getElementById("editVideoDescription").value = video.description || "";
+                document.getElementById("editVideoDuration").value = video.duration || "";
+                document.getElementById("editVideoThumbnail").value = video.thumbnail || "";
+                document.getElementById("editVideoModal").style.display = "flex";
+            }
+        }
+
+        document.getElementById("editVideoForm")?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const videoId = document.getElementById("editVideoId").value;
+            const title = document.getElementById("editVideoTitle").value.trim();
+            const subject = document.getElementById("editVideoSubject").value;
+            const videoUrl = document.getElementById("editVideoUrl").value.trim();
+            const description = document.getElementById("editVideoDescription").value.trim();
+            const duration = document.getElementById("editVideoDuration").value.trim();
+            const thumbnail = document.getElementById("editVideoThumbnail").value.trim();
+
+            const res = await apiRequest(`/admin/video/update/${videoId}`, "PUT", {
+                title, subject, video_url: videoUrl, description, duration, thumbnail
+            }, true);
+
+            if (res.status === 200) {
+                showMessage("videoMsg", "✅ Video updated successfully!", false);
+                document.getElementById("editVideoModal").style.display = "none";
+                loadAdminVideos();
+            } else {
+                showMessage("videoMsg", res.data.message || "Failed to update video", true);
+            }
+        });
+
+        document.getElementById("closeEditVideoModal")?.addEventListener("click", () => {
+            document.getElementById("editVideoModal").style.display = "none";
+        });
+
+        async function deleteVideo(videoId) {
+            if (!confirm("Are you sure you want to delete this video?")) return;
+
+            const res = await apiRequest(`/admin/video/delete/${videoId}`, "DELETE", null, true);
+            if (res.status === 200) {
+                showMessage("videoMsg", "✅ Video deleted successfully!", false);
+                loadAdminVideos();
+            } else {
+                showMessage("videoMsg", res.data.message || "Failed to delete video", true);
+            }
+        }
+
+        // ============ FEE MANAGEMENT FUNCTIONS ============
+
+        // Generate fees for all students
+        async function generateAllFees() {
+            const semester = document.getElementById('generateSemester').value;
+            const dueDate = document.getElementById('generateDueDate').value;
+
+            if (!confirm(`Generate fees for ${semester} for all students? This will create fee records for students who don't have them.`)) {
+                return;
+            }
+
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Generating...';
+
+            try {
+                const res = await apiRequest('/api/fee/admin/generate', 'POST', {
+                    semester: semester,
+                    due_date: dueDate
+                }, true);
+
+                if (res.status === 200) {
+                    showMessage('feeMsg', `✅ ${res.data.message}`, false);
+                    loadFeeStructures();
+                } else {
+                    showMessage('feeMsg', res.data.message || 'Failed to generate fees', true);
+                }
+            } catch (error) {
+                showMessage('feeMsg', 'Error generating fees', true);
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+
+        // Load fee structures
+        async function loadFeeStructures() {
+            const container = document.getElementById('feeStructureList');
+            try {
+                const res = await apiRequest('/api/fee/admin/structures', 'GET', null, true);
+                if (res.status === 200 && res.data.length > 0) {
+                    feeData = res.data;
+                    renderFeeStructures(feeData);
+                } else {
+                    container.innerHTML = '<p style="color:#94a3b8;">No fee structures found. Generate fees for students.</p>';
+                }
+            } catch (error) {
+                container.innerHTML = '<p style="color:#94a3b8;">Error loading fee structures.</p>';
+            }
+        }
+
+        function renderFeeStructures(data) {
+            const container = document.getElementById('feeStructureList');
+            if (!data || data.length === 0) {
+                container.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: #94a3b8;">
+                <i class="fas fa-inbox" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                <p>No fee structures found.</p>
+                <p style="font-size: 13px; margin-top: 5px;">Generate fees for students using the button above.</p>
+            </div>
+        `;
+                return;
+            }
+
+            let html = `<table class="data-table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Pending</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+            data.forEach(f => {
+                const statusColor = f.status === 'Paid' ? '#10b981' : '#ef4444';
+
+                html += `<tr>
+            <td><strong>${f.student_name || 'ID: ' + f.student_id}</strong></td>
+            <td>${f.course || '-'}</td>
+            <td>${f.semester || '-'}</td>
+            <td>₹${f.total_fee.toLocaleString()}</td>
+            <td style="color:#10b981;">₹${f.paid_amount.toLocaleString()}</td>
+            <td style="color:${f.pending_amount > 0 ? '#ef4444' : '#10b981'};">₹${f.pending_amount.toLocaleString()}</td>
+            <td>${f.due_date ? new Date(f.due_date).toLocaleDateString() : '-'}</td>
+            <td><span style="color:${statusColor}; font-weight:600;">${f.status || 'Unpaid'}</span></td>
+            <td>
+                <button class="btn-warning btn" style="padding:4px 8px; margin-right:4px;" onclick="editFeeStatus('${f.id}')"><i class="fas fa-edit"></i></button>
+                <button class="btn-danger btn" style="padding:4px 8px;" onclick="deleteFeeStructure('${f.id}')"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>`;
+            });
+
+            html += `</tbody></table>
+        <div style="margin-top:10px; color:#94a3b8; font-size:13px;">
+            Total: ${data.length} fee record(s)
+        </div>`;
+
+            container.innerHTML = html;
+        }
+        // Edit fee status
+        window.editFeeStatus = function (feeId) {
+            const newStatus = prompt('Enter status (Paid/Unpaid):', 'Paid');
+            if (!newStatus || !['Paid', 'Unpaid'].includes(newStatus)) {
+                showMessage('feeMsg', 'Invalid status. Use Paid or Unpaid', true);
+                return;
+            }
+
+            apiRequest(`/api/fee/admin/update/${feeId}`, 'PUT', { status: newStatus }, true)
+                .then(res => {
+                    if (res.status === 200) {
+                        showMessage('feeMsg', '✅ Fee status updated!', false);
+                        loadFeeStructures();
+                    } else {
+                        showMessage('feeMsg', res.data.message || 'Update failed', true);
+                    }
+                })
+                .catch(() => {
+                    showMessage('feeMsg', 'Error updating fee status', true);
+                });
+        };
+
+        // Delete fee structure
+        window.deleteFeeStructure = async function (feeId) {
+            if (!confirm('Delete this fee record? This cannot be undone.')) return;
+
+            try {
+                const res = await apiRequest(`/api/fee/admin/delete/${feeId}`, 'DELETE', null, true);
+                if (res.status === 200) {
+                    showMessage('feeMsg', '✅ Fee record deleted!', false);
+                    loadFeeStructures();
+                } else {
+                    showMessage('feeMsg', res.data.message || 'Delete failed', true);
+                }
+            } catch (error) {
+                showMessage('feeMsg', 'Error deleting fee record', true);
+            }
+        };
+
+        // Export fee data
+        document.getElementById('exportFeeBtn')?.addEventListener('click', function () {
+            if (!feeData || feeData.length === 0) {
+                showMessage('feeMsg', 'No data to export', true);
+                return;
+            }
+
+            let csv = 'Student ID,Student Name,Course,Semester,Total,Paid,Pending,Status,Due Date\n';
+            feeData.forEach(f => {
+                csv += `${f.student_id},${f.student_name || ''},${f.course || ''},${f.semester || ''},${f.total_fee},${f.paid_amount},${f.pending_amount},${f.status},${f.due_date || ''}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `fee_data_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showMessage('feeMsg', '✅ Fee data exported successfully!', false);
+        });
+
+        // Refresh fee button
+        document.getElementById('refreshFeeBtn')?.addEventListener('click', loadFeeStructures);
+
+        // Add refresh button listeners
+        document.getElementById("refreshBtn")?.addEventListener("click", loadStudentList);
+        document.getElementById("refreshSubjectsBtn")?.addEventListener("click", loadSubjects);
+        document.getElementById("refreshAttendanceBtn")?.addEventListener("click", () => loadAttendanceRecords(false));
+        document.getElementById("refreshMarksBtn")?.addEventListener("click", () => loadMarksRecords(false));
+
+        // Load on page load
+        if (document.getElementById("adminVideoList")) {
+            setTimeout(loadAdminVideos, 1000);
+        }
+        setTimeout(loadAnnouncements, 1500);
+        setTimeout(loadMaterials, 1500);
     </script>
 </body>
+
 </html>
