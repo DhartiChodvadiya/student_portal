@@ -50,16 +50,16 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "your_secret_key_123")
 app.config["SESSION_COOKIE_SECURE"] = True
 
 # Razorpay configuration (Add your keys)
-RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "rzp_test_T2zJ8dNx0Nchzu")
-RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "hzbeamTVRd0G06j4WCEGIHrZ")
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "Put_your_razorpay_keyidhere")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "Put_your_razorpay_keysecret_here")
 
 # Email Configuration
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME", "dhartichodvadiya@gmail.com")
-app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", "mohwexvxsrxncfko")
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME", "yoyur_email_id@gmail.com")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", "your_mail_password")
 app.config["MAIL_DEFAULT_SENDER"] = os.getenv(
     "MAIL_DEFAULT_SENDER", "dhartichodvadiya@gmail.com"
 )
