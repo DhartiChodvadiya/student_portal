@@ -1219,37 +1219,38 @@ def test():
     return "✅ Server is working! App is LIVE!"
 
 
-# STUDENT REGISTER
 @app.route("/student/register", methods=["POST"])
 def student_register():
-    data = request.json
-    existing_student = student.find_one({"student_id": data["student_id"]})
-    existing_email = student.find_one({"email": data["email"]})
-    if existing_student:
-        return jsonify({"message": "Student ID already exists"}), 400
-    if existing_email:
-        return jsonify({"message": "Email already exists"}), 400
-    hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
-    
-    # Get semester from registration data
-    current_semester = data.get("current_semester", "Semester 1")
-    
-    student.insert_one(
-        {
+    try:
+        data = request.json
+        print("📝 Registration data:", data)  # Debug log
+        
+        # Check if student ID exists
+        existing_student = student.find_one({"student_id": data["student_id"]})
+        if existing_student:
+            return jsonify({"message": "Student ID already exists"}), 400
+        
+        # Check if email exists
+        existing_email = student.find_one({"email": data["email"]})
+        if existing_email:
+            return jsonify({"message": "Email already registered"}), 400
+        
+        # Hash password
+        hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
+        data["password"] = hashed_password
+        
+        # Insert student
+        result = student.insert_one(data)
+        
+        return jsonify({
+            "message": "Registration successful!",
             "student_id": data["student_id"],
-            "name": data["name"],
-            "email": data["email"],
-            "password": hashed_password,
-            "course": data["course"],
-            "phoneno": data["phoneno"],
-            "gender": data["gender"],
-            "current_semester": current_semester,  # ✅ This saves the semester
-            "created_at": datetime.datetime.now().isoformat()
-        }
-    )
-    token = generate_token(data["student_id"], "student")
-    return jsonify({"message": "Student Registered Successfully", "token": token})
-
+            "name": data["name"]
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ Registration error: {e}")
+        return jsonify({"message": f"Server error: {str(e)}"}), 500
 # STUDENT LOGIN
 @app.route("/student/login", methods=["POST"])
 def student_login():
