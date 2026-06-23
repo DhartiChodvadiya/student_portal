@@ -2608,13 +2608,13 @@ def get_leaderboard(current_user):
     for stu in student.find({}):
         points = 0
 
-        # Points from attendance (5 per present, 2 per late)
+        # Points from attendance (1 per present, 0.5 per late)
         attendances = attendance.find({"student_id": stu["student_id"]})
         for att in attendances:
             if att["status"] == "Present":
-                points += 5
+                points += 1
             elif att["status"] == "Late":
-                points += 2
+                points += 0.5
 
         # Points from marks (percentage / 10)
         student_marks = marks.find({"student_id": stu["student_id"]})
@@ -2625,16 +2625,15 @@ def get_leaderboard(current_user):
             {"name": stu["name"], "points": points, "student_id": stu["student_id"]}
         )
 
-    # Sort by points
+    # Sort by points (highest first)
     all_students.sort(key=lambda x: x["points"], reverse=True)
 
-    # Add rank
+    # Add rank (top 50 students)
     result = []
     for i, stu in enumerate(all_students[:50]):
         result.append({"rank": i + 1, "name": stu["name"], "points": stu["points"]})
 
     return jsonify(result), 200
-
 
 # ============ DISCUSSION FORUM ============
 
