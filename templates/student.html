@@ -6274,6 +6274,60 @@ document.getElementById("backToLoginBtn")?.addEventListener("click", showLogin);
                 loadFeeSummary();
             }, 1000);
         };   
+        // ============ EMERGENCY FIX ============
+console.log("🔧 Applying emergency fix...");
+
+// Fix Register Button
+var regBtn = document.getElementById("showRegisterBtn");
+if (regBtn) {
+    regBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("registerSection").style.display = "flex";
+        document.getElementById("forgotSection").style.display = "none";
+        console.log("✅ Register working!");
+        return false;
+    };
+}
+
+// Fix Login Button
+var logBtn = document.getElementById("showLoginBtn");
+if (logBtn) {
+    logBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "flex";
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("forgotSection").style.display = "none";
+        console.log("✅ Login working!");
+        return false;
+    };
+}
+
+// Fix Forgot Button
+var forBtn = document.getElementById("showForgotBtn");
+if (forBtn) {
+    forBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("forgotSection").style.display = "flex";
+        console.log("✅ Forgot working!");
+        return false;
+    };
+}
+
+// Fix Back to Login
+var backBtn = document.getElementById("backToLoginBtn");
+if (backBtn) {
+    backBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "flex";
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("forgotSection").style.display = "none";
+        console.log("✅ Back to Login working!");
+        return false;
+    };
+}
     </script>
 
     <!-- Session Timeout Modal -->
