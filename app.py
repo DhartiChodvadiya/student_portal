@@ -4017,5 +4017,6 @@ def verify_razorpay_payment(current_user):
 
 
 # RUN APP
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))  # ✅ Use Render's PORT
+    app.run(host='0.0.0.0', port=port, debug=False)
