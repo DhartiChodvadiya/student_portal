@@ -2433,25 +2433,6 @@ def get_activity_logs(current_user):
     return jsonify(all_logs), 200
 
 
-@app.route("/test", methods=["GET"])
-def test():
-    return jsonify({"message": "Backend is working!"})
-
-
-@app.route("/test_email_send", methods=["GET"])
-def test_email_send():
-    try:
-        msg = Message(
-            subject="Test Email",
-            recipients=["your-test-email@gmail.com"],  # Change to your email
-            body="This is a test email",
-        )
-        mail.send(msg)
-        return "Email sent successfully!"
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-
 # ============ ANNOUNCEMENTS ==========
 
 
