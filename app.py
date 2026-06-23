@@ -1273,7 +1273,42 @@ def student_login():
             "gender": student_data["gender"],
         }
     )
-
+# STUDENT LOGIN (API route for frontend)
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    """API login route for frontend compatibility"""
+    try:
+        data = request.json
+        email = data.get("email")
+        password = data.get("password")
+        
+        if not email or not password:
+            return jsonify({"message": "Email and password required"}), 400
+        
+        student_data = student.find_one({"email": email})
+        if not student_data:
+            return jsonify({"message": "Student Not Found"}), 404
+        
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        if student_data["password"] != hashed_password:
+            return jsonify({"message": "Invalid Password"}), 401
+        
+        token = generate_token(student_data["student_id"], "student")
+        
+        return jsonify({
+            "message": "Student Login Successful",
+            "token": token,
+            "student_id": student_data["student_id"],
+            "name": student_data["name"],
+            "email": student_data["email"],
+            "course": student_data["course"],
+            "phoneno": student_data["phoneno"],
+            "gender": student_data["gender"],
+        }), 200
+        
+    except Exception as e:
+        print(f"Login error: {e}")
+        return jsonify({"message": f"Server error: {str(e)}"}), 500
 
 # FORGOT PASSWORD
 @app.route("/student/forgot_password", methods=["POST"])
