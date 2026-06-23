@@ -7,7 +7,7 @@ local_db = local_client["student_portal"]
 
 # Atlas connection with correct credentials
 atlas_client = MongoClient(
-    "mongodb+srv://dhartichodvadiya_db_user:DhaRTI9706@cluster0.rs9mdgp.mongodb.net/",
+    "",
     tlsAllowInvalidCertificates=True,
     tlsAllowInvalidHostnames=True
 )

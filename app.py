@@ -50,18 +50,18 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "your_secret_key_123")
 app.config["SESSION_COOKIE_SECURE"] = True
 
 # Razorpay configuration (Add your keys)
-RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "rzp_test_T2zJ8dNx0Nchzu")
-RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "hzbeamTVRd0G06j4WCEGIHrZ")
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID", "Put_your_razorpay_keyidhere")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET", "Put_your_razorpay_keysecret_here")
 
 # Email Configuration
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME", "dhartichodvadiya@gmail.com")
-app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", "mohwexvxsrxncfko")
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME", "your_email_id@gmail.com")
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD", "your_mail_password")
 app.config["MAIL_DEFAULT_SENDER"] = os.getenv(
-    "MAIL_DEFAULT_SENDER", "dhartichodvadiya@gmail.com"
+    "MAIL_DEFAULT_SENDER", "your_email_id@gmail.com"
 )
 
 # Configuration for file uploads
@@ -1214,38 +1214,43 @@ def quiz_page():
 def fee_page():
     return render_template("fee.html")
 
+@app.route('/test')
+def test():
+    return "✅ Server is working! App is LIVE!"
 
-# STUDENT REGISTER
+
 @app.route("/student/register", methods=["POST"])
 def student_register():
-    data = request.json
-    existing_student = student.find_one({"student_id": data["student_id"]})
-    existing_email = student.find_one({"email": data["email"]})
-    if existing_student:
-        return jsonify({"message": "Student ID already exists"}), 400
-    if existing_email:
-        return jsonify({"message": "Email already exists"}), 400
-    hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
-    
-    # Get semester from registration data
-    current_semester = data.get("current_semester", "Semester 1")
-    
-    student.insert_one(
-        {
+    try:
+        data = request.json
+        print("📝 Registration data:", data)  # Debug log
+        
+        # Check if student ID exists
+        existing_student = student.find_one({"student_id": data["student_id"]})
+        if existing_student:
+            return jsonify({"message": "Student ID already exists"}), 400
+        
+        # Check if email exists
+        existing_email = student.find_one({"email": data["email"]})
+        if existing_email:
+            return jsonify({"message": "Email already registered"}), 400
+        
+        # Hash password
+        hashed_password = hashlib.sha256(data["password"].encode()).hexdigest()
+        data["password"] = hashed_password
+        
+        # Insert student
+        result = student.insert_one(data)
+        
+        return jsonify({
+            "message": "Registration successful!",
             "student_id": data["student_id"],
-            "name": data["name"],
-            "email": data["email"],
-            "password": hashed_password,
-            "course": data["course"],
-            "phoneno": data["phoneno"],
-            "gender": data["gender"],
-            "current_semester": current_semester,  # ✅ This saves the semester
-            "created_at": datetime.datetime.now().isoformat()
-        }
-    )
-    token = generate_token(data["student_id"], "student")
-    return jsonify({"message": "Student Registered Successfully", "token": token})
-
+            "name": data["name"]
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ Registration error: {e}")
+        return jsonify({"message": f"Server error: {str(e)}"}), 500
 # STUDENT LOGIN
 @app.route("/student/login", methods=["POST"])
 def student_login():
@@ -1269,7 +1274,42 @@ def student_login():
             "gender": student_data["gender"],
         }
     )
-
+# STUDENT LOGIN (API route for frontend)
+@app.route("/api/login", methods=["POST"])
+def api_login():
+    """API login route for frontend compatibility"""
+    try:
+        data = request.json
+        email = data.get("email")
+        password = data.get("password")
+        
+        if not email or not password:
+            return jsonify({"message": "Email and password required"}), 400
+        
+        student_data = student.find_one({"email": email})
+        if not student_data:
+            return jsonify({"message": "Student Not Found"}), 404
+        
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        if student_data["password"] != hashed_password:
+            return jsonify({"message": "Invalid Password"}), 401
+        
+        token = generate_token(student_data["student_id"], "student")
+        
+        return jsonify({
+            "message": "Student Login Successful",
+            "token": token,
+            "student_id": student_data["student_id"],
+            "name": student_data["name"],
+            "email": student_data["email"],
+            "course": student_data["course"],
+            "phoneno": student_data["phoneno"],
+            "gender": student_data["gender"],
+        }), 200
+        
+    except Exception as e:
+        print(f"Login error: {e}")
+        return jsonify({"message": f"Server error: {str(e)}"}), 500
 
 # FORGOT PASSWORD
 @app.route("/student/forgot_password", methods=["POST"])
@@ -2427,25 +2467,6 @@ def get_activity_logs(current_user):
             }
         )
     return jsonify(all_logs), 200
-
-
-@app.route("/test", methods=["GET"])
-def test():
-    return jsonify({"message": "Backend is working!"})
-
-
-@app.route("/test_email_send", methods=["GET"])
-def test_email_send():
-    try:
-        msg = Message(
-            subject="Test Email",
-            recipients=["your-test-email@gmail.com"],  # Change to your email
-            body="This is a test email",
-        )
-        mail.send(msg)
-        return "Email sent successfully!"
-    except Exception as e:
-        return f"Error: {str(e)}"
 
 
 # ============ ANNOUNCEMENTS ==========

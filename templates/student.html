@@ -2371,7 +2371,7 @@
             </form>
             <hr style="margin: 1.5rem 0;">
             <div style="text-align: center;">
-                <p>Don't have an account? <a href="#" id="showRegisterBtn" style="color: #667eea;">Register here</a></p>
+                <p>Don't have an account? <a href="#" id="showRegisterBtn" style="color: #667eea;" onclick="showRegister(event)">Register here</a></p>
                 <p style="margin-top: 0.5rem;"><a href="#" id="showForgotBtn"
                         style="color: #667eea; font-size: 0.85rem;">Forgot Password?</a></p>
             </div>
@@ -4260,12 +4260,29 @@
             if (res.status === 200) { showMessage("forgotMsg", res.data.message, false); setTimeout(() => showLogin(), 1500); }
             else { showMessage("forgotMsg", res.data.message, true); }
         });
+        function showRegister(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("✅ Register clicked via inline!");
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("registerSection").style.display = "flex";
+    document.getElementById("forgotSection").style.display = "none";
+    return false;
+}
 
         // Navigation
-        document.getElementById("showRegisterBtn")?.addEventListener("click", () => { document.getElementById("loginSection").style.display = "none"; document.getElementById("registerSection").style.display = "flex"; document.getElementById("forgotSection").style.display = "none"; });
-        document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
-        document.getElementById("showForgotBtn")?.addEventListener("click", () => { document.getElementById("loginSection").style.display = "none"; document.getElementById("registerSection").style.display = "none"; document.getElementById("forgotSection").style.display = "flex"; });
-        document.getElementById("backToLoginBtn")?.addEventListener("click", showLogin);
+document.getElementById("showRegisterBtn")?.addEventListener("click", () => { 
+    document.getElementById("loginSection").style.display = "none"; 
+    document.getElementById("registerSection").style.display = "flex"; 
+    document.getElementById("forgotSection").style.display = "none"; 
+});
+document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
+document.getElementById("showForgotBtn")?.addEventListener("click", () => { 
+    document.getElementById("loginSection").style.display = "none"; 
+    document.getElementById("registerSection").style.display = "none"; 
+    document.getElementById("forgotSection").style.display = "flex"; 
+});
+document.getElementById("backToLoginBtn")?.addEventListener("click", showLogin);
 
         // Initialize validations
         setupEmailValidation();
@@ -6257,6 +6274,60 @@
                 loadFeeSummary();
             }, 1000);
         };   
+        // ============ EMERGENCY FIX ============
+console.log("🔧 Applying emergency fix...");
+
+// Fix Register Button
+var regBtn = document.getElementById("showRegisterBtn");
+if (regBtn) {
+    regBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("registerSection").style.display = "flex";
+        document.getElementById("forgotSection").style.display = "none";
+        console.log("✅ Register working!");
+        return false;
+    };
+}
+
+// Fix Login Button
+var logBtn = document.getElementById("showLoginBtn");
+if (logBtn) {
+    logBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "flex";
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("forgotSection").style.display = "none";
+        console.log("✅ Login working!");
+        return false;
+    };
+}
+
+// Fix Forgot Button
+var forBtn = document.getElementById("showForgotBtn");
+if (forBtn) {
+    forBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("forgotSection").style.display = "flex";
+        console.log("✅ Forgot working!");
+        return false;
+    };
+}
+
+// Fix Back to Login
+var backBtn = document.getElementById("backToLoginBtn");
+if (backBtn) {
+    backBtn.onclick = function(e) {
+        e.preventDefault();
+        document.getElementById("loginSection").style.display = "flex";
+        document.getElementById("registerSection").style.display = "none";
+        document.getElementById("forgotSection").style.display = "none";
+        console.log("✅ Back to Login working!");
+        return false;
+    };
+}
     </script>
 
     <!-- Session Timeout Modal -->
