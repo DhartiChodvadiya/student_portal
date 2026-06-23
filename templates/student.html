@@ -4262,10 +4262,18 @@
         });
 
         // Navigation
-        document.getElementById("showRegisterBtn")?.addEventListener("click", () => { document.getElementById("loginSection").style.display = "none"; document.getElementById("registerSection").style.display = "flex"; document.getElementById("forgotSection").style.display = "none"; });
-        document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
-        document.getElementById("showForgotBtn")?.addEventListener("click", () => { document.getElementById("loginSection").style.display = "none"; document.getElementById("registerSection").style.display = "none"; document.getElementById("forgotSection").style.display = "flex"; });
-        document.getElementById("backToLoginBtn")?.addEventListener("click", showLogin);
+document.getElementById("showRegisterBtn")?.addEventListener("click", () => { 
+    document.getElementById("loginSection").style.display = "none"; 
+    document.getElementById("registerSection").style.display = "flex"; 
+    document.getElementById("forgotSection").style.display = "none"; 
+});
+document.getElementById("showLoginBtn")?.addEventListener("click", showLogin);
+document.getElementById("showForgotBtn")?.addEventListener("click", () => { 
+    document.getElementById("loginSection").style.display = "none"; 
+    document.getElementById("registerSection").style.display = "none"; 
+    document.getElementById("forgotSection").style.display = "flex"; 
+});
+document.getElementById("backToLoginBtn")?.addEventListener("click", showLogin);
 
         // Initialize validations
         setupEmailValidation();
