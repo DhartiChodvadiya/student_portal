@@ -2371,7 +2371,7 @@
             </form>
             <hr style="margin: 1.5rem 0;">
             <div style="text-align: center;">
-                <p>Don't have an account? <a href="#" id="showRegisterBtn" style="color: #667eea;">Register here</a></p>
+                <p>Don't have an account? <a href="#" id="showRegisterBtn" style="color: #667eea;" onclick="showRegister(event)">Register here</a></p>
                 <p style="margin-top: 0.5rem;"><a href="#" id="showForgotBtn"
                         style="color: #667eea; font-size: 0.85rem;">Forgot Password?</a></p>
             </div>
@@ -4260,6 +4260,15 @@
             if (res.status === 200) { showMessage("forgotMsg", res.data.message, false); setTimeout(() => showLogin(), 1500); }
             else { showMessage("forgotMsg", res.data.message, true); }
         });
+        function showRegister(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("✅ Register clicked via inline!");
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("registerSection").style.display = "flex";
+    document.getElementById("forgotSection").style.display = "none";
+    return false;
+}
 
         // Navigation
 document.getElementById("showRegisterBtn")?.addEventListener("click", () => { 
