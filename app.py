@@ -1214,6 +1214,10 @@ def quiz_page():
 def fee_page():
     return render_template("fee.html")
 
+@app.route('/test')
+def test():
+    return "✅ Server is working! App is LIVE!"
+
 
 # STUDENT REGISTER
 @app.route("/student/register", methods=["POST"])
